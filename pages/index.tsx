@@ -1,14 +1,24 @@
-import type { NextPage } from "next"
+import type { NextPage, GetStaticProps } from "next"
 import Head from "next/head"
 import Title from "../components/Title"
+import { ProductShort } from "../types"
+import { getProducts } from "../lib"
 
-const products = [
-  { id: 1, title: "Product One" },
-  { id: 2, title: "Product Two" },
-  { id: 3, title: "Product Three" },
-]
+type Props = {
+  products: ProductShort[]
+}
 
-const Home: NextPage = () => {
+export const getStaticProps: GetStaticProps<Props> = async (ctx) => {
+  const products: ProductShort[] = await getProducts()
+  return {
+    props: {
+      products,
+    },
+    revalidate: 5 * 60,
+  }
+}
+
+const Home: NextPage<Props> = ({ products }) => {
   return (
     <>
       <Head>
