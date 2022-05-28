@@ -1,11 +1,11 @@
 // Option-2: Fetch data on client
-// directly from an external api
+// from our internal api route
 import { useEffect, useState } from "react"
 import type { NextPage } from "next"
 import Head from "next/head"
+import axios from "axios"
 import Title from "../components/Title"
 import { ProductShort } from "../types"
-import { getProducts } from "../lib"
 
 const Home: NextPage = () => {
   const [loading, setLoading] = useState(false)
@@ -15,10 +15,15 @@ const Home: NextPage = () => {
     let mounted = true
     const fetchProducts = async () => {
       setLoading(true)
-      const received = await getProducts()
-      if (mounted) {
-        setLoading(false)
-        setProducts(received)
+      try {
+        const { data } = await axios.get<ProductShort[]>("/api/products")
+        if (mounted) {
+          setLoading(false)
+          setProducts(data)
+        }
+      } catch (error) {
+        if (mounted) setLoading(false)
+        // some err handling
       }
     }
     fetchProducts()
