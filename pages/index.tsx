@@ -1,20 +1,22 @@
 import type { NextPage, GetStaticProps } from "next"
 import Head from "next/head"
+import Link from "next/link"
 import Title from "../components/Title"
 import { ProductShort } from "../types"
 import { getProducts } from "../lib"
+import { REVALIDATE_PRODUCTS } from "../constants"
 
 type Props = {
   products: ProductShort[]
 }
 
 export const getStaticProps: GetStaticProps<Props> = async (ctx) => {
-  const products: ProductShort[] = await getProducts()
+  const [maybeProducts] = await getProducts()
   return {
     props: {
-      products,
+      products: maybeProducts || [],
     },
-    revalidate: 5 * 60,
+    revalidate: REVALIDATE_PRODUCTS,
   }
 }
 
@@ -31,7 +33,11 @@ const Home: NextPage<Props> = ({ products }) => {
         <Title>Next Shop</Title>
         <ul>
           {products.map(({ id, title }) => (
-            <li key={id}>{title}</li>
+            <li key={id}>
+              <Link href={`/products/${id}`}>
+                <a>{title}</a>
+              </Link>
+            </li>
           ))}
         </ul>
       </main>

@@ -46,23 +46,24 @@ export type Product = {
 
 export type ProductShort = { id: number; title: string }
 
-export type ApiPayloadProductsList = {
-  data: {
-    id: number
-    attributes: {
-      title: string
-      description: string
-      price: number
-      picture: {
-        data: {
-          id: number
-          attributes: Omit<ImageData, "id">
-        }
+export type ApiRawProduct = {
+  id: number
+  attributes: {
+    title: string
+    description: string
+    price: number
+    picture: {
+      data: {
+        id: number
+        attributes: Omit<ImageData, "id">
       }
-      createdAt: string
-      updatedAt: string
     }
-  }[]
+    createdAt: string
+    updatedAt: string
+  }
+}
+export type ApiPayloadProductsList = {
+  data: ApiRawProduct[]
   meta: {
     pagination: {
       page: number
@@ -70,5 +71,10 @@ export type ApiPayloadProductsList = {
       pageCount: number
       total: number
     }
-  }
+  } & Record<string, any>
+}
+
+export type ApiPayloadProductDetails = {
+  data: ApiRawProduct
+  meta: Record<string, any>
 }
