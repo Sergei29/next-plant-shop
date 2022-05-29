@@ -34,6 +34,8 @@ export type ImageData = {
   updatedAt: string
 }
 
+export type ImageDataShort = Pick<ImageData, "url" | "id">
+
 export type Product = {
   id: number
   title: string
@@ -44,7 +46,12 @@ export type Product = {
   updatedAt: string
 }
 
-export type ProductShort = { id: number; title: string; price: number }
+export type ProductShort = {
+  id: number
+  title: string
+  price: number
+  picture: ImageDataShort
+}
 
 export type ApiRawProduct = {
   id: number

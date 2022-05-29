@@ -4,6 +4,8 @@ import {
   ProductShort,
   ApiPayloadProductDetails,
   ApiRawProduct,
+  ImageData,
+  ImageDataShort,
 } from "../types"
 import { CMS_API } from "../constants"
 import { fetchData } from "./api"
@@ -24,10 +26,18 @@ export const formatProductsApiPayload = (
   apiPayload: ApiPayloadProductsList
 ): Product[] => apiPayload.data.map(formatRawProduct)
 
-const stripProduct = ({ id, title, price }: Product): ProductShort => ({
+const stripPicture = ({ id, url }: ImageData): ImageDataShort => ({ id, url })
+
+const stripProduct = ({
   id,
   title,
   price,
+  picture,
+}: Product): ProductShort => ({
+  id,
+  title,
+  price,
+  picture: stripPicture(picture),
 })
 
 export const displayPrice = (amount: number, currency = "$") =>
