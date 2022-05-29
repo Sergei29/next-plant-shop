@@ -3,24 +3,37 @@ import Head from "next/head"
 import Link from "next/link"
 import Title from "../components/Title"
 import { ProductShort } from "../types"
-import { getProducts } from "../lib"
+import { getProducts, ApiError } from "../lib"
 import { REVALIDATE_PRODUCTS } from "../constants"
 
 type Props = {
+  products: ProductShort[] | null
+}
+
+type PageProps = {
   products: ProductShort[]
 }
 
 export const getStaticProps: GetStaticProps<Props> = async (ctx) => {
-  const [maybeProducts] = await getProducts()
-  return {
-    props: {
-      products: maybeProducts || [],
-    },
-    revalidate: REVALIDATE_PRODUCTS,
+  try {
+    const products = await getProducts()
+    return {
+      props: {
+        products,
+      },
+      revalidate: REVALIDATE_PRODUCTS,
+    }
+  } catch (error) {
+    if (error instanceof ApiError && error.status === 404) {
+      return {
+        notFound: true,
+      }
+    }
+    throw error
   }
 }
 
-const Home: NextPage<Props> = ({ products }) => {
+const Home: NextPage<PageProps> = ({ products }) => {
   return (
     <>
       <Head>
