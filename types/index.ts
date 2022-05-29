@@ -44,7 +44,7 @@ export type Product = {
   updatedAt: string
 }
 
-export type ProductShort = { id: number; title: string }
+export type ProductShort = { id: number; title: string; price: number }
 
 export type ApiRawProduct = {
   id: number

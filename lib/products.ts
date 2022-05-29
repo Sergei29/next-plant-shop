@@ -24,10 +24,14 @@ export const formatProductsApiPayload = (
   apiPayload: ApiPayloadProductsList
 ): Product[] => apiPayload.data.map(formatRawProduct)
 
-const stripProduct = ({ id, title }: Product): ProductShort => ({
+const stripProduct = ({ id, title, price }: Product): ProductShort => ({
   id,
   title,
+  price,
 })
+
+export const displayPrice = (amount: number, currency = "$") =>
+  currency + amount.toFixed(2)
 
 export const getProducts = async (): Promise<ProductShort[]> => {
   const productsRaw = await fetchData<ApiPayloadProductsList>(

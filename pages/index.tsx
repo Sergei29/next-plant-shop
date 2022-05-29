@@ -5,6 +5,7 @@ import Title from "../components/Title"
 import { ProductShort } from "../types"
 import { getProducts, ApiError } from "../lib"
 import { REVALIDATE_PRODUCTS } from "../constants"
+import ProductCard from "../components/ProductCard"
 
 type Props = {
   products: ProductShort[] | null
@@ -45,11 +46,9 @@ const Home: NextPage<PageProps> = ({ products }) => {
       <main className="px-6 py-4">
         <Title>Next Shop</Title>
         <ul>
-          {products.map(({ id, title }) => (
-            <li key={id}>
-              <Link href={`/products/${id}`}>
-                <a>{title}</a>
-              </Link>
+          {products.map((product) => (
+            <li key={product.id}>
+              <ProductCard product={product} />
             </li>
           ))}
         </ul>
