@@ -9,7 +9,7 @@ type Props = {
 
 const ProductCard = ({ product }: Props): JSX.Element => {
   return (
-    <div className="border my-4 w-64 shadow hover:shadow-xl">
+    <div className="border w-64 shadow hover:shadow-xl">
       <Link href={`/products/${product.id}`}>
         <a>
           {/* eslint-disable-next-line @next/next/no-img-element */}
