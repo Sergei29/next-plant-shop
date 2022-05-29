@@ -5,7 +5,7 @@ import {
   ApiPayloadProductDetails,
   ApiRawProduct,
 } from "../types"
-import { STRAPI_API } from "../constants"
+import { CMS_API } from "../constants"
 import { fetchData } from "./api"
 
 export const formatRawProduct = ({
@@ -31,14 +31,14 @@ const stripProduct = ({ id, title }: Product): ProductShort => ({
 
 export const getProducts = async (): Promise<ProductShort[]> => {
   const productsRaw = await fetchData<ApiPayloadProductsList>(
-    `${STRAPI_API}/products?populate=*`
+    `${CMS_API}/products?populate=*`
   )
   return formatProductsApiPayload(productsRaw).map(stripProduct)
 }
 
 export const getProductById = async (id: string): Promise<Product> => {
   const productRaw = await fetchData<ApiPayloadProductDetails>(
-    `${STRAPI_API}/products/${id}?populate=*`
+    `${CMS_API}/products/${id}?populate=*`
   )
   return formatRawProduct(productRaw.data)
 }

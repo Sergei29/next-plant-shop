@@ -1,3 +1,4 @@
-export const REVALIDATE_PRODUCTS = 10 //5 * 60
-
-export const STRAPI_API = "http://localhost:1337/api"
+export const REVALIDATE_PRODUCTS = process.env.REVALIDATE_SECONDS
+  ? parseInt(process.env.REVALIDATE_SECONDS, 10)
+  : 24 * 60 * 60
+export const CMS_API = process.env.CMS_API || ""
