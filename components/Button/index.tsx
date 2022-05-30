@@ -11,7 +11,7 @@ const Button = ({
   return (
     <button
       className={clsx(
-        "bg-green-800 text-gray-100 hover:bg-green-700 active:bg-green-600 rounded w-max px-4 py-2",
+        "bg-green-800 text-gray-100 hover:bg-green-700 active:bg-green-600 disabled:bg-gray-500 rounded w-max px-4 py-2",
         className
       )}
       {...restButtonProps}

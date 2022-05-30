@@ -1,4 +1,5 @@
 import axios, { AxiosError, AxiosResponse, AxiosRequestConfig } from "axios"
+import { ERROR_MSG } from "../constants"
 
 export const generateServerError = () => {
   const res: AxiosResponse = {
@@ -27,8 +28,8 @@ export const generateWrongRequestError = () => {
  */
 export class ApiError extends Error {
   status: number
-  constructor(url: string, status: number) {
-    super(`'${url}' returned ${status}`)
+  constructor(url: string, status: number, message?: string | null) {
+    super(message || `'${url}' returned ${status}`)
 
     if (Error.captureStackTrace) {
       Error.captureStackTrace(this, ApiError)
@@ -50,6 +51,7 @@ export const fetchData = async <T>(
     })
     return data as T
   } catch (error) {
+    const errorMessage = getErrorMessageFromApi(error)
     let statusCode = (error as AxiosError).response?.status || 400
     if (
       !(error as AxiosError).response ||
@@ -57,6 +59,36 @@ export const fetchData = async <T>(
     ) {
       statusCode = 503
     }
-    throw new ApiError(url, statusCode)
+    throw new ApiError(url, statusCode, errorMessage)
   }
+}
+
+export const getErrorMessage = (error: ApiError | Error | any) => {
+  let message = null
+
+  if (error instanceof ApiError) {
+    message = error.message || ERROR_MSG[`${error.status}`]
+  } else if (error instanceof Error) {
+    message = error.message || null
+  }
+
+  return message || ERROR_MSG.default
+}
+
+export function getErrorMessageFromApi(error: Error | AxiosError | any) {
+  let errorMessage: string | null = null
+
+  if (error instanceof AxiosError) {
+    const { code = "default", message, request, response } = error
+    if (!!response) {
+      errorMessage =
+        response.data?.error?.message || message || ERROR_MSG[code] || null
+    } else if (!!request) {
+      errorMessage = request.statusText || message || ERROR_MSG[code] || null
+    } else if (error instanceof Error) {
+      errorMessage = error.message || null
+    }
+  }
+
+  return errorMessage
 }
