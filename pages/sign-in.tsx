@@ -1,10 +1,14 @@
 import type { NextPage } from "next"
 import Head from "next/head"
 import PageContainer from "../components/PageContainer"
+import SignInForm from "../components/SignInForm"
 
 type PageProps = {}
 
 const SignInPage: NextPage<PageProps> = ({}) => {
+  const signInStart = (formState: Record<string, any>) => {
+    console.log("Submit: ", formState)
+  }
   return (
     <>
       <Head>
@@ -15,6 +19,7 @@ const SignInPage: NextPage<PageProps> = ({}) => {
 
       <PageContainer>
         <PageContainer.Title>Sign In</PageContainer.Title>
+        <SignInForm onSubmit={signInStart} />
       </PageContainer>
     </>
   )
