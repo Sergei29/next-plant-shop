@@ -1,5 +1,6 @@
 import type { NextPage, GetStaticProps, GetStaticPaths } from "next"
 import Head from "next/head"
+import Image from "next/image"
 import { ParsedUrlQuery } from "querystring"
 import Title from "../../components/Title"
 import { Product } from "../../types"
@@ -7,6 +8,7 @@ import {
   getProductById,
   generateProductsStaticPaths,
   ApiError,
+  displayPrice,
 } from "../../lib"
 import { REVALIDATE_PRODUCTS } from "../../constants"
 
@@ -70,7 +72,22 @@ const ProductPage: NextPage<PageProps> = ({ product }) => {
 
       <main className="px-6 py-4">
         <Title>{product.title}</Title>
-        <p>{product.description}</p>
+        <div className="flex flex-col gap-4 md:flex-row">
+          <div className="md:basis-1/2">
+            <Image
+              src={product.picture.url}
+              alt={product.title}
+              width={640}
+              height={480}
+            />
+          </div>
+          <div className="md:basis-1/2">
+            <p className="text-sm">{product.description}</p>
+            <p className="text-lg font-bold mt-2">
+              {displayPrice(product.price)}
+            </p>
+          </div>
+        </div>
       </main>
     </>
   )
