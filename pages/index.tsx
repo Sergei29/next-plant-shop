@@ -1,11 +1,10 @@
 import type { NextPage, GetStaticProps } from "next"
 import Head from "next/head"
-import Link from "next/link"
-import Title from "../components/Title"
 import { ProductShort } from "../types"
 import { getProducts, ApiError } from "../lib"
 import { REVALIDATE_PRODUCTS } from "../constants"
 import ProductCard from "../components/ProductCard"
+import PageContainer from "../components/PageContainer"
 
 type Props = {
   products: ProductShort[] | null
@@ -39,12 +38,12 @@ const Home: NextPage<PageProps> = ({ products }) => {
     <>
       <Head>
         <title>Next Shop</title>
-        <meta name="description" content="Next shop" />
+        <meta name="description" content="Next shop, homepage" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="px-6 py-4">
-        <Title>Next Shop</Title>
+      <PageContainer>
+        <PageContainer.Title>Next Shop</PageContainer.Title>
         <ul className="grid gap-4 grid-cols-1 lg:grid-cols-3 md:grid-cols-2">
           {products.map((product) => (
             <li key={product.id}>
@@ -52,7 +51,7 @@ const Home: NextPage<PageProps> = ({ products }) => {
             </li>
           ))}
         </ul>
-      </main>
+      </PageContainer>
     </>
   )
 }

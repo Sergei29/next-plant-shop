@@ -2,7 +2,7 @@ import type { NextPage, GetStaticProps, GetStaticPaths } from "next"
 import Head from "next/head"
 import Image from "next/image"
 import { ParsedUrlQuery } from "querystring"
-import Title from "../../components/Title"
+import PageContainer from "../../components/PageContainer"
 import { Product } from "../../types"
 import {
   getProductById,
@@ -65,13 +65,13 @@ const ProductPage: NextPage<PageProps> = ({ product }) => {
   return (
     <>
       <Head>
-        <title>Next Shop | Product</title>
-        <meta name="description" content="Next shop" />
+        <title>Next Shop | {product.title}</title>
+        <meta name="description" content="Next shop, product page" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="px-6 py-4">
-        <Title>{product.title}</Title>
+      <PageContainer>
+        <PageContainer.Title>{product.title}</PageContainer.Title>
         <div className="flex flex-col gap-4 md:flex-row">
           <div className="md:basis-1/2">
             <Image
@@ -88,7 +88,7 @@ const ProductPage: NextPage<PageProps> = ({ product }) => {
             </p>
           </div>
         </div>
-      </main>
+      </PageContainer>
     </>
   )
 }
