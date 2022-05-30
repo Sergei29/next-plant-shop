@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosResponse } from "axios"
+import axios, { AxiosError, AxiosResponse, AxiosRequestConfig } from "axios"
 
 export const generateServerError = () => {
   const res: AxiosResponse = {
@@ -39,10 +39,16 @@ export class ApiError extends Error {
   }
 }
 
-export const fetchData = async <T>(url: string): Promise<T> => {
+export const fetchData = async <T>(
+  url: string,
+  config: AxiosRequestConfig = {}
+): Promise<T> => {
   try {
-    const { data } = await axios.get<T>(url)
-    return data
+    const { data } = await axios(url, {
+      method: "GET",
+      ...config,
+    })
+    return data as T
   } catch (error) {
     let statusCode = (error as AxiosError).response?.status || 400
     if (

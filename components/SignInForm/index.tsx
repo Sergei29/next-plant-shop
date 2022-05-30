@@ -2,9 +2,10 @@ import React, { useState } from "react"
 import Input from "../Input"
 import Field from "../Field"
 import Button from "../Button"
+import { SignInCredentials } from "../../types"
 
 type Props = {
-  onSubmit: (...args: any[]) => void
+  onSubmit: (credentials: SignInCredentials) => void | Promise<void>
 }
 
 const SignInForm = ({ onSubmit }: Props): JSX.Element => {
@@ -17,7 +18,7 @@ const SignInForm = ({ onSubmit }: Props): JSX.Element => {
   }
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault()
-    onSubmit({ email, password })
+    onSubmit({ identifier: email, password })
     handleReset()
   }
   return (

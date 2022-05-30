@@ -85,3 +85,22 @@ export type ApiPayloadProductDetails = {
   data: ApiRawProduct
   meta: Record<string, any>
 }
+
+export type SignInCredentials = {
+  identifier: string
+  password: string
+}
+
+export type SignInResponse = {
+  jwt: string
+  user: {
+    id: number
+    username: string
+    email: string
+    provider: string
+    confirmed: boolean
+    blocked: boolean
+    createdAt: string
+    updatedAt: string
+  }
+}
