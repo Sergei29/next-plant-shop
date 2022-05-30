@@ -14,7 +14,7 @@ const SignInPage: NextPage<PageProps> = ({}) => {
       </Head>
 
       <PageContainer>
-        <PageContainer.Title>SignInPage</PageContainer.Title>
+        <PageContainer.Title>Sign In</PageContainer.Title>
       </PageContainer>
     </>
   )

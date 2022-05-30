@@ -37,7 +37,7 @@ const Home: NextPage<PageProps> = ({ products }) => {
   return (
     <>
       <Head>
-        <title>Next Shop</title>
+        <title>Next Shop | Indoor Plants</title>
         <meta name="description" content="Next shop, homepage" />
         <link rel="icon" href="/favicon.ico" />
       </Head>

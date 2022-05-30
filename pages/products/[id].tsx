@@ -73,7 +73,7 @@ const ProductPage: NextPage<PageProps> = ({ product }) => {
       <PageContainer>
         <PageContainer.Title>{product.title}</PageContainer.Title>
         <div className="flex flex-col gap-4 md:flex-row">
-          <div className="md:basis-1/2">
+          <div className="md:basis-1/2 lg:basis-1/3">
             <Image
               src={product.picture.url}
               alt={product.title}
