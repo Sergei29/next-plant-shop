@@ -3,13 +3,7 @@ import Head from "next/head"
 import PageContainer from "../components/PageContainer"
 import SignInForm from "../components/SignInForm"
 
-type PageProps = {}
-
-const SignInPage: NextPage<PageProps> = ({}) => {
-  const onSubmit = ({ response }: Record<string, any>) => {
-    console.log("logged in: ", { response })
-  }
-
+const SignInPage: NextPage = () => {
   return (
     <>
       <Head>
@@ -20,7 +14,7 @@ const SignInPage: NextPage<PageProps> = ({}) => {
 
       <PageContainer>
         <PageContainer.Title>Sign In</PageContainer.Title>
-        <SignInForm onSubmit={onSubmit} />
+        <SignInForm />
       </PageContainer>
     </>
   )

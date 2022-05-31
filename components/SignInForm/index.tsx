@@ -1,9 +1,9 @@
 import React, { useState } from "react"
+import { useRouter } from "next/router"
 import Input from "../Input"
 import Field from "../Field"
 import Button from "../Button"
 import { SignInResponse } from "../../types"
-import { NEXT_PUBLIC_CMS_API } from "../../constants"
 import { fetchData, getErrorMessage } from "../../lib"
 
 type Status = {
@@ -11,11 +11,8 @@ type Status = {
   error: null | string
 }
 
-type Props = {
-  onSubmit: (...args: any[]) => void | Promise<void>
-}
-
-const SignInForm = ({ onSubmit }: Props): JSX.Element => {
+const SignInForm = (): JSX.Element => {
+  const router = useRouter()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [status, setStatus] = useState<Status>({ loading: false, error: null })
@@ -25,27 +22,26 @@ const SignInForm = ({ onSubmit }: Props): JSX.Element => {
     setPassword("")
     setStatus({ loading: false, error: null })
   }
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
     setStatus({ loading: true, error: null })
     try {
-      const response = await fetchData<SignInResponse>(
-        `${NEXT_PUBLIC_CMS_API}/auth/local`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          data: { identifier: email, password },
-        }
-      )
-      onSubmit({ response })
+      const response = await fetchData<SignInResponse>(`api/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: { email, password },
+      })
+      router.push("/")
       handleReset()
     } catch (error) {
       const message = getErrorMessage(error)
       setStatus({ loading: false, error: message })
     }
   }
+
   return (
     <form className="inline-flex flex-col gap-4" onSubmit={handleSubmit}>
       <Field label="Email">

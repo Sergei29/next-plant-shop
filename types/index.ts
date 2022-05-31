@@ -91,16 +91,25 @@ export type SignInCredentials = {
   password: string
 }
 
+export type UserRaw = {
+  id: number
+  username: string
+  email: string
+  provider: string
+  confirmed: boolean
+  blocked: boolean
+  createdAt: string
+  updatedAt: string
+}
+
+export type UserShort = {
+  id: number
+  name: string
+}
+
 export type SignInResponse = {
   jwt: string
-  user: {
-    id: number
-    username: string
-    email: string
-    provider: string
-    confirmed: boolean
-    blocked: boolean
-    createdAt: string
-    updatedAt: string
-  }
+  user: UserRaw
 }
+
+export type ErrorResponse = { error: { message: string } }
