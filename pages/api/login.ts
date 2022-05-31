@@ -11,7 +11,7 @@ const handleLogin: NextApiHandler<ReturnType> = async (req, res) => {
     res.status(405).end()
     return
   }
-  const { email: emailAddress, password } = req.body
+  const { email, password } = req.body
 
   try {
     const {
@@ -22,7 +22,7 @@ const handleLogin: NextApiHandler<ReturnType> = async (req, res) => {
       headers: {
         "Content-Type": "application/json",
       },
-      data: { identifier: emailAddress, password },
+      data: { identifier: email, password },
     })
     res
       .status(200)

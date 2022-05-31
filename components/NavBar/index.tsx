@@ -8,6 +8,11 @@ type Props = {}
 const NavBar = ({}: Props): JSX.Element => {
   const [user, setUser] = useState<UserShort | null>(null)
 
+  const handleSignOut = async () => {
+    await fetchData(`/api/logout`)
+    setUser(null)
+  }
+
   useEffect(() => {
     let mounted = true
     const getUser = async () => {
@@ -38,7 +43,7 @@ const NavBar = ({}: Props): JSX.Element => {
         {user ? (
           <>
             <li>{user.name}</li>
-            <button>Sign Out</button>
+            <button onClick={handleSignOut}>Sign Out</button>
           </>
         ) : (
           <li>

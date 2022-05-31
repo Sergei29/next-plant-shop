@@ -27,7 +27,7 @@ const SignInForm = (): JSX.Element => {
     event.preventDefault()
     setStatus({ loading: true, error: null })
     try {
-      const response = await fetchData<SignInResponse>(`api/login`, {
+      const response = await fetchData<SignInResponse>(`/api/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
