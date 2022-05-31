@@ -6,6 +6,11 @@ import { SignInResponse } from "../../types"
 import { NEXT_PUBLIC_CMS_API } from "../../constants"
 import { fetchData, getErrorMessage } from "../../lib"
 
+type Status = {
+  loading: boolean
+  error: null | string
+}
+
 type Props = {
   onSubmit: (...args: any[]) => void | Promise<void>
 }
@@ -13,18 +18,16 @@ type Props = {
 const SignInForm = ({ onSubmit }: Props): JSX.Element => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<null | string>(null)
+  const [status, setStatus] = useState<Status>({ loading: false, error: null })
 
   const handleReset = () => {
     setEmail("")
     setPassword("")
+    setStatus({ loading: false, error: null })
   }
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
-    setLoading(true)
-    setError(null)
-
+    setStatus({ loading: true, error: null })
     try {
       const response = await fetchData<SignInResponse>(
         `${NEXT_PUBLIC_CMS_API}/auth/local`,
@@ -37,12 +40,10 @@ const SignInForm = ({ onSubmit }: Props): JSX.Element => {
         }
       )
       onSubmit({ response })
-      setLoading(false)
       handleReset()
     } catch (error) {
       const message = getErrorMessage(error)
-      setLoading(false)
-      setError(message)
+      setStatus({ loading: false, error: message })
     }
   }
   return (
@@ -65,10 +66,12 @@ const SignInForm = ({ onSubmit }: Props): JSX.Element => {
           onChange={(event) => setPassword(event.target.value)}
         />
       </Field>
-      <p className="text-red-700 h-7">{error || ""}</p>
-      <Button type="submit" disabled={loading}>
-        Sign In
-      </Button>
+      {status.error && <p className="text-red-700 h-7">{status.error}</p>}
+      {status.loading ? (
+        <p>loading...</p>
+      ) : (
+        <Button type="submit">Sign In</Button>
+      )}
     </form>
   )
 }
