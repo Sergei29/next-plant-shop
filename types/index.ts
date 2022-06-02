@@ -113,3 +113,5 @@ export type SignInResponse = {
 }
 
 export type ErrorResponse = { error: { message: string } }
+
+export type LoginCredentials = { email: string; password: string }

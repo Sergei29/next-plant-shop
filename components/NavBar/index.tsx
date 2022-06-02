@@ -1,35 +1,15 @@
-import React, { useState, useEffect } from "react"
+import React from "react"
 import Link from "next/link"
 import { fetchData } from "../../lib"
-import { UserShort } from "../../types"
+import { useUser } from "../../hooks"
 
-type Props = {}
-
-const NavBar = ({}: Props): JSX.Element => {
-  const [user, setUser] = useState<UserShort | null>(null)
+const NavBar = (): JSX.Element => {
+  const user = useUser()
 
   const handleSignOut = async () => {
     await fetchData(`/api/logout`)
-    setUser(null)
+    // FIXME setUser(null)
   }
-
-  useEffect(() => {
-    let mounted = true
-    const getUser = async () => {
-      try {
-        const user = await fetchData<UserShort>(`/api/user`)
-        if (mounted) {
-          setUser(user)
-        }
-      } catch (error) {
-        setUser(null)
-      }
-    }
-    getUser()
-    return () => {
-      mounted = false
-    }
-  }, [])
 
   return (
     <nav className="px-2 py-1 text-sm">

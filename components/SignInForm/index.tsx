@@ -3,45 +3,27 @@ import { useRouter } from "next/router"
 import Input from "../Input"
 import Field from "../Field"
 import Button from "../Button"
-import { SignInResponse } from "../../types"
-import { fetchData, getErrorMessage } from "../../lib"
+import { useSignIn } from "../../hooks"
 
-type Status = {
-  loading: boolean
-  error: null | string
-}
+const SuccessMessage = () => (
+  <div className="flex flex-col justify-center ml-4">
+    <h2>Success</h2>
+  </div>
+)
 
 const SignInForm = (): JSX.Element => {
   const router = useRouter()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const [status, setStatus] = useState<Status>({ loading: false, error: null })
-
-  const handleReset = () => {
-    setEmail("")
-    setPassword("")
-    setStatus({ loading: false, error: null })
-  }
+  const { signIn, signInLoading, signInError, signInStatus } = useSignIn()
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
-    setStatus({ loading: true, error: null })
-    try {
-      const response = await fetchData<SignInResponse>(`/api/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        data: { email, password },
-      })
-      router.push("/")
-      handleReset()
-    } catch (error) {
-      const message = getErrorMessage(error)
-      setStatus({ loading: false, error: message })
-    }
+    const isSignedIn = await signIn({ email, password })
+    if (isSignedIn) router.push("/")
   }
 
+  if (signInStatus === "success") return <SuccessMessage />
   return (
     <form className="inline-flex flex-col gap-4" onSubmit={handleSubmit}>
       <Field label="Email">
@@ -62,8 +44,8 @@ const SignInForm = (): JSX.Element => {
           onChange={(event) => setPassword(event.target.value)}
         />
       </Field>
-      {status.error && <p className="text-red-700 h-7">{status.error}</p>}
-      {status.loading ? (
+      {signInError && <p className="text-red-700 h-7">{signInError}</p>}
+      {signInLoading ? (
         <p>loading...</p>
       ) : (
         <Button type="submit">Sign In</Button>
