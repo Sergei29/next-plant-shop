@@ -1,10 +1,13 @@
 import React from "react"
 import Link from "next/link"
+import { useRouter } from "next/router"
 import { useUser, useSignOut } from "../../hooks"
 
 const NavBar = (): JSX.Element => {
+  const { pathname } = useRouter()
   const user = useUser()
   const { signOut, signOutLoading } = useSignOut()
+  const isAuthPage = pathname === "/sign-in" || pathname === "/register"
 
   return (
     <nav className="px-2 py-1 text-sm">
@@ -23,11 +26,13 @@ const NavBar = (): JSX.Element => {
             </button>
           </>
         ) : (
-          <li>
-            <Link href="/sign-in">
-              <a>Sign In</a>
-            </Link>
-          </li>
+          !isAuthPage && (
+            <li>
+              <Link href="/sign-in">
+                <a>Sign In</a>
+              </Link>
+            </li>
+          )
         )}
       </ul>
     </nav>
