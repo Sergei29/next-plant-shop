@@ -115,3 +115,8 @@ export type SignInResponse = {
 export type ErrorResponse = { error: { message: string } }
 
 export type LoginCredentials = { email: string; password: string }
+export type SignUpCredentials = {
+  username: string
+  email: string
+  password: string
+}

@@ -1,30 +1,29 @@
 import type { NextPage } from "next"
 import Head from "next/head"
 import PageContainer from "../components/PageContainer"
-import SignInForm from "../components/SignInForm"
+import RegisterForm from "../components/RegisterForm"
 import AuthButton from "../components/AuthButton"
 
-const SignInPage: NextPage = () => {
+const RegisterPage: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Next Shop | Sign in</title>
-        <meta name="description" content="Next shop, sign in" />
+        <title>Next Shop | Sign Up</title>
+        <meta name="description" content="Next shop, register" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <PageContainer>
         <PageContainer.Title className="flex gap-4 items-baseline">
-          <span className="min-w-[103px]">Sign In</span>
-          <AuthButton href="/register">
-            Don&rsquo;t have an account? Register
+          <span className="min-w-[103px]">Sign Up</span>
+          <AuthButton href="/sign-in">
+            Already have an account? Sign in
           </AuthButton>
         </PageContainer.Title>
-
-        <SignInForm />
+        <RegisterForm />
       </PageContainer>
     </>
   )
 }
 
-export default SignInPage
+export default RegisterPage
