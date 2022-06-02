@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "react-query"
 import { LoginCredentials, UserShort } from "../types"
 import { fetchData, getErrorMessage } from "../lib"
+import { QUERY_KEY } from "../constants"
 
 export const useSignIn = (onSuccess?: (...args: any[]) => void) => {
   const queryClient = useQueryClient()
@@ -19,7 +20,7 @@ export const useSignIn = (onSuccess?: (...args: any[]) => void) => {
   const signIn = async ({ email, password }: LoginCredentials) => {
     try {
       const user = await mutateAsync({ email, password })
-      queryClient.setQueryData("user", user)
+      queryClient.setQueryData(QUERY_KEY.USER, user)
       onSuccess && onSuccess()
       return true
     } catch (error) {

@@ -4,6 +4,10 @@ export const REVALIDATE_PRODUCTS = process.env.REVALIDATE_SECONDS
 export const CMS_API = process.env.CMS_API || ""
 export const NEXT_PUBLIC_CMS_API = process.env.NEXT_PUBLIC_CMS_API || ""
 
+export const QUERY_KEY = {
+  USER: "user",
+}
+
 export const ERROR_MSG: Record<string, string> = {
   default: "An error occurred",
   "400": "Bad Request",
