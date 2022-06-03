@@ -3,6 +3,7 @@ export const REVALIDATE_PRODUCTS = process.env.REVALIDATE_SECONDS
   : 24 * 60 * 60
 export const CMS_API = process.env.CMS_API || ""
 export const NEXT_PUBLIC_CMS_API = process.env.NEXT_PUBLIC_CMS_API || ""
+export const NEXT_PUBLIC_CMS_API_DEV = process.env.NEXT_PUBLIC_CMS_API_DEV || ""
 export const QUERY_KEY = {
   USER: "user",
 }

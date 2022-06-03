@@ -3,6 +3,7 @@ import Head from "next/head"
 import PageContainer from "../components/PageContainer"
 import RegisterForm from "../components/RegisterForm"
 import AuthButton from "../components/AuthButton"
+import GoogleLogin from "../components/GoogleLogin"
 
 const RegisterPage: NextPage = () => {
   return (
@@ -19,6 +20,7 @@ const RegisterPage: NextPage = () => {
           <AuthButton href="/sign-in">
             Already have an account? Sign in
           </AuthButton>
+          <GoogleLogin />
         </PageContainer.Title>
         <RegisterForm />
       </PageContainer>
