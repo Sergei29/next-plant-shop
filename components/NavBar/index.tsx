@@ -8,6 +8,7 @@ const NavBar = (): JSX.Element => {
   const user = useUser()
   const { signOut, signOutLoading } = useSignOut()
   const isAuthPage = pathname === "/sign-in" || pathname === "/register"
+  const isAuthenticated = !!user
 
   return (
     <nav className="px-2 py-1 text-sm">
@@ -18,8 +19,13 @@ const NavBar = (): JSX.Element => {
           </Link>
         </li>
         <li role="separator" className="flex-1" />
-        {user ? (
+        {isAuthenticated ? (
           <>
+            <li>
+              <Link href="/cart">
+                <a>Cart</a>
+              </Link>
+            </li>
             <li>{user.name}</li>
             <button onClick={signOut} disabled={signOutLoading}>
               Sign Out
