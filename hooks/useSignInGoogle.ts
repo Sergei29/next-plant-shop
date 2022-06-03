@@ -1,25 +1,25 @@
 import { useMutation, useQueryClient } from "react-query"
-import { LoginCredentials, UserShort } from "../types"
+import { UserShort } from "../types"
 import { fetchData, getErrorMessage } from "../lib"
 import { QUERY_KEY } from "../constants"
 
-export const useSignIn = (onSuccess?: (...args: any[]) => void) => {
+export const useSignInGoogle = (onSuccess?: (...args: any[]) => void) => {
   const queryClient = useQueryClient()
 
   const { mutateAsync, error, isLoading, isError, status } = useMutation(
-    ({ email, password }: LoginCredentials) =>
-      fetchData<UserShort>(`/api/login`, {
+    (access_token: string) =>
+      fetchData<UserShort>(`/api/auth/google/callback`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        data: { email, password },
+        data: { access_token },
       })
   )
 
-  const signIn = async ({ email, password }: LoginCredentials) => {
+  const googleSignIn = async (access_token: any) => {
     try {
-      const user = await mutateAsync({ email, password })
+      const user = await mutateAsync(access_token)
       queryClient.setQueryData(QUERY_KEY.USER, user)
       onSuccess && onSuccess()
       return true
@@ -28,11 +28,10 @@ export const useSignIn = (onSuccess?: (...args: any[]) => void) => {
       return false
     }
   }
-
   return {
-    signIn,
-    signInLoading: isLoading,
-    signInError: isError ? getErrorMessage(error) : null,
-    signInStatus: status,
+    googleSignIn,
+    gSignInLoading: isLoading,
+    gSignInError: isError ? getErrorMessage(error) : null,
+    gSignInStatus: status,
   }
 }

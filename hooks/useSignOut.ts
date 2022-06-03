@@ -1,4 +1,3 @@
-import React from "react"
 import { useMutation, useQueryClient } from "react-query"
 import { fetchData } from "../lib"
 import { QUERY_KEY } from "../constants"

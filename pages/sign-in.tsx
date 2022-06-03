@@ -3,6 +3,7 @@ import Head from "next/head"
 import PageContainer from "../components/PageContainer"
 import SignInForm from "../components/SignInForm"
 import AuthButton from "../components/AuthButton"
+import GoogleLogin from "../components/GoogleLogin"
 
 const SignInPage: NextPage = () => {
   return (
@@ -14,11 +15,12 @@ const SignInPage: NextPage = () => {
       </Head>
 
       <PageContainer>
-        <PageContainer.Title className="flex gap-4 items-baseline">
+        <PageContainer.Title className="flex gap-4 items-center">
           <span className="min-w-[103px]">Sign In</span>
           <AuthButton href="/register">
             Don&rsquo;t have an account? Register
           </AuthButton>
+          <GoogleLogin />
         </PageContainer.Title>
 
         <SignInForm />

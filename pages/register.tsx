@@ -15,7 +15,7 @@ const RegisterPage: NextPage = () => {
       </Head>
 
       <PageContainer>
-        <PageContainer.Title className="flex gap-4 items-baseline">
+        <PageContainer.Title className="flex gap-4 items-center">
           <span className="min-w-[103px]">Sign Up</span>
           <AuthButton href="/sign-in">
             Already have an account? Sign in
