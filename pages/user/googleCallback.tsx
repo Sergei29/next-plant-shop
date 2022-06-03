@@ -3,9 +3,7 @@ import { useRouter } from "next/router"
 import PageContainer from "../../components/PageContainer"
 import { useSignInGoogle } from "../../hooks"
 
-type Props = {}
-
-const GoogleCallback = ({}: Props): JSX.Element => {
+const GoogleCallback = (): JSX.Element => {
   const router = useRouter()
   const { googleSignIn, gSignInError, gSignInLoading, gSignInStatus } =
     useSignInGoogle()

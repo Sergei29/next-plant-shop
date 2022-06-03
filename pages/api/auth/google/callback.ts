@@ -4,7 +4,7 @@ import { fetchData, getErrorMessage, ApiError } from "../../../../lib"
 import { SignInResponse } from "../../../../types"
 import { CMS_API } from "../../../../constants"
 
-type ReturnType = {}
+type ReturnType = { id: number; name: string } | { error: { message: string } }
 
 const handleGoogleAuth: NextApiHandler<ReturnType> = async (req, res) => {
   if (req.method !== "POST") {
