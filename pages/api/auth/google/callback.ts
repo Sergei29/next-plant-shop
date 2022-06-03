@@ -2,10 +2,11 @@ import { NextApiHandler } from "next"
 import cookie from "cookie"
 import { fetchData, getErrorMessage, ApiError } from "../../../../lib"
 import { SignInResponse } from "../../../../types"
+import { CMS_API } from "../../../../constants"
 
 type ReturnType = {}
 
-const handler: NextApiHandler<ReturnType> = async (req, res) => {
+const handleGoogleAuth: NextApiHandler<ReturnType> = async (req, res) => {
   if (req.method !== "POST") {
     res.status(405).end()
     return
@@ -13,8 +14,9 @@ const handler: NextApiHandler<ReturnType> = async (req, res) => {
 
   try {
     const { jwt, user } = await fetchData<SignInResponse>(
-      `/api/auth/google/callback?access_token=${req.body.access_token}`
+      `${CMS_API}/auth/google/callback?access_token=${req.body.access_token}`
     )
+
     res
       .status(200)
       .setHeader(
@@ -32,4 +34,4 @@ const handler: NextApiHandler<ReturnType> = async (req, res) => {
   }
 }
 
-export default handler
+export default handleGoogleAuth

@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "react-query"
 import { LoginCredentials, UserShort } from "../types"
 import { fetchData, getErrorMessage } from "../lib"
-import { QUERY_KEY, NEXT_PUBLIC_CMS_API } from "../constants"
+import { QUERY_KEY } from "../constants"
 
 export const useSignIn = (onSuccess?: (...args: any[]) => void) => {
   const queryClient = useQueryClient()
@@ -35,9 +35,11 @@ export const useSignIn = (onSuccess?: (...args: any[]) => void) => {
     let error: string | null = null
     let response: T | null = null
     try {
-      response = await fetchData<T>(
-        `${NEXT_PUBLIC_CMS_API}/auth/google/callback?access_token=${access_token}`
-      )
+      response = await fetchData<T>(`/api/auth/google/callback`, {
+        method: "POST",
+        data: { access_token },
+      })
+
       return [response, error]
     } catch (e) {
       error = getErrorMessage(e)
