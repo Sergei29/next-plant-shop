@@ -53,6 +53,15 @@ export type ProductShort = {
   picture: ImageDataShort
 }
 
+export type ListMetaData = {
+  pagination: {
+    page: number
+    pageSize: number
+    pageCount: number
+    total: number
+  }
+} & Record<string, any>
+
 export type ApiRawProduct = {
   id: number
   attributes: {
@@ -119,4 +128,63 @@ export type SignUpCredentials = {
   username: string
   email: string
   password: string
+}
+
+export type CartUser = {
+  id: number
+  attributes: {
+    username: string
+    email: string
+    provider: string
+    confirmed: boolean
+    blocked: boolean
+    createdAt: string
+    updatedAt: string
+  }
+}
+export type CartProduct = {
+  id: number
+  attributes: {
+    title: string
+    price: number
+    description: string
+    createdAt: string
+    updatedAt: string
+  }
+}
+
+export type CartItemRaw = {
+  id: number
+  attributes: {
+    quantity: number
+    createdAt: string
+    updatedAt: string
+    user: {
+      data: CartUser
+    }
+    product: {
+      data: CartProduct
+    }
+  }
+}
+
+export type CartItemFormatted = {
+  id: number
+  quantity: number
+  user: {
+    id: number
+    name: string
+    email: string
+    provider: string
+  }
+  product: {
+    id: number
+    title: string
+    price: number
+  }
+}
+
+export type ApiCartPayloadType = {
+  data: CartItemRaw[]
+  meta: ListMetaData
 }

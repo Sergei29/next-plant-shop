@@ -6,6 +6,7 @@ export const NEXT_PUBLIC_CMS_API = process.env.NEXT_PUBLIC_CMS_API || ""
 export const NEXT_PUBLIC_CMS_API_DEV = process.env.NEXT_PUBLIC_CMS_API_DEV || ""
 export const QUERY_KEY = {
   USER: "user",
+  CART: "cart",
 }
 
 export const ERROR_MSG: Record<string, string> = {
