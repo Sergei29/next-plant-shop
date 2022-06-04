@@ -1,5 +1,5 @@
 import { NextApiHandler } from "next"
-import { fetchData, getErrorMessage, ApiError } from "../../lib"
+import { fetchData, processServerError } from "../../lib"
 import { CMS_API } from "../../constants"
 import { UserRaw, UserShort, ErrorResponse } from "../../types"
 
@@ -31,9 +31,7 @@ const handleUser: NextApiHandler<ReturnType> = async (req, res) => {
 
     res.status(200).json({ id, name })
   } catch (error) {
-    const message = getErrorMessage(error)
-    const status = (error as ApiError).status || 401
-    res.status(status).json({ error: { message } })
+    processServerError(error, res)
   }
 }
 

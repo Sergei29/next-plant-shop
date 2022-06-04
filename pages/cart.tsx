@@ -11,7 +11,7 @@ type PageProps = {}
 const CartPage: NextPage<PageProps> = ({}) => {
   const user = useUser()
   const { push } = useRouter()
-  const { cartItems, isCartItemsLoading, cartItemsError } = useCartItems()
+  const { cart, isCartLoading, cartError } = useCartItems()
 
   useEffect(() => {
     if (!user) {
@@ -30,11 +30,7 @@ const CartPage: NextPage<PageProps> = ({}) => {
 
       <PageContainer>
         <PageContainer.Title>Cart</PageContainer.Title>
-        <CartItemsList
-          items={cartItems}
-          loading={isCartItemsLoading}
-          error={cartItemsError}
-        />
+        <CartItemsList cart={cart} loading={isCartLoading} error={cartError} />
       </PageContainer>
     </>
   )

@@ -1,4 +1,5 @@
 import axios, { AxiosError, AxiosResponse, AxiosRequestConfig } from "axios"
+import { NextApiResponse } from "next"
 import { ERROR_MSG } from "../constants"
 
 export const generateServerError = () => {
@@ -94,4 +95,10 @@ export function getErrorMessageFromApi(error: Error | AxiosError | any) {
   }
 
   return errorMessage
+}
+
+export const processServerError = (error: unknown, res: NextApiResponse) => {
+  const message = getErrorMessage(error) as string
+  const status = (error as ApiError).status || 401
+  res.status(status).json({ error: { message } })
 }

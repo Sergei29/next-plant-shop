@@ -1,3 +1,8 @@
+export type Entity<D> = {
+  id: number
+  attributes: D
+}
+
 export type ImgFormat = {
   name: string
   hash: string
@@ -62,22 +67,19 @@ export type ListMetaData = {
   }
 } & Record<string, any>
 
-export type ApiRawProduct = {
-  id: number
-  attributes: {
-    title: string
-    description: string
-    price: number
-    picture: {
-      data: {
-        id: number
-        attributes: Omit<ImageData, "id">
-      }
-    }
-    createdAt: string
-    updatedAt: string
+export type ProductRaw = {
+  title: string
+  description: string
+  price: number
+  picture: {
+    data: Entity<Omit<ImageData, "id">>
   }
+  createdAt: string
+  updatedAt: string
 }
+
+export type ApiRawProduct = Entity<ProductRaw>
+
 export type ApiPayloadProductsList = {
   data: ApiRawProduct[]
   meta: {
@@ -130,43 +132,24 @@ export type SignUpCredentials = {
   password: string
 }
 
-export type CartUser = {
-  id: number
-  attributes: {
-    username: string
-    email: string
-    provider: string
-    confirmed: boolean
-    blocked: boolean
-    createdAt: string
-    updatedAt: string
-  }
-}
+export type CartUser = Entity<Omit<UserRaw, "id">>
+
 export type CartProduct = {
   id: number
-  attributes: {
-    title: string
-    price: number
-    description: string
-    createdAt: string
-    updatedAt: string
-  }
+  attributes: Omit<Product, "id" | "picture">
 }
 
-export type CartItemRaw = {
-  id: number
-  attributes: {
-    quantity: number
-    createdAt: string
-    updatedAt: string
-    user: {
-      data: CartUser
-    }
-    product: {
-      data: CartProduct
-    }
+export type CartItemRaw = Entity<{
+  quantity: number
+  createdAt: string
+  updatedAt: string
+  user: {
+    data: CartUser
   }
-}
+  product: {
+    data: CartProduct
+  }
+}>
 
 export type CartItemFormatted = {
   id: number
@@ -182,4 +165,9 @@ export type CartItemFormatted = {
 export type ApiCartPayloadType = {
   data: CartItemRaw[]
   meta: ListMetaData
+}
+
+export type Cart = {
+  items: CartItemFormatted[]
+  total: number
 }

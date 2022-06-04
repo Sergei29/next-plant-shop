@@ -1,18 +1,9 @@
 import { NextApiHandler } from "next"
-import {
-  fetchData,
-  getErrorMessage,
-  ApiError,
-  formatCartPayload,
-} from "../../lib"
+import { fetchData, formatCartPayload, processServerError } from "../../lib"
 import { CMS_API } from "../../constants"
-import {
-  ErrorResponse,
-  ApiCartPayloadType,
-  CartItemFormatted,
-} from "../../types"
+import { ErrorResponse, ApiCartPayloadType, Cart } from "../../types"
 
-type ReturnType = CartItemFormatted[] | ErrorResponse
+type ReturnType = Cart | ErrorResponse
 
 const handleCart: NextApiHandler<ReturnType> = async (req, res) => {
   const { jwt } = req.cookies
@@ -46,9 +37,7 @@ const handleCart: NextApiHandler<ReturnType> = async (req, res) => {
       const cart = formatCartPayload(cartPayload)
       res.status(200).json(cart)
     } catch (error) {
-      const message = getErrorMessage(error) as string
-      const status = (error as ApiError).status || 401
-      res.status(status).json({ error: { message } })
+      processServerError(error, res)
     }
   }
 }

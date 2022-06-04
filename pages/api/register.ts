@@ -1,10 +1,10 @@
 import { NextApiHandler } from "next"
 import cookie from "cookie"
-import { SignInResponse } from "../../types"
+import { SignInResponse, UserShort, ErrorResponse } from "../../types"
 import { CMS_API } from "../../constants"
-import { fetchData, getErrorMessage, ApiError } from "../../lib"
+import { fetchData, processServerError } from "../../lib"
 
-type ReturnType = { id: number; name: string } | { error: { message: string } }
+type ReturnType = UserShort | ErrorResponse
 
 const handleRegister: NextApiHandler<ReturnType> = async (req, res) => {
   if (req.method !== "POST") {
@@ -35,9 +35,7 @@ const handleRegister: NextApiHandler<ReturnType> = async (req, res) => {
       )
       .json({ id, name })
   } catch (error) {
-    const message = getErrorMessage(error)
-    const status = (error as ApiError).status || 401
-    res.status(status).json({ error: { message } })
+    processServerError(error, res)
   }
 }
 

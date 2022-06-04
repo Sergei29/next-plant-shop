@@ -2,30 +2,30 @@ import { useQuery } from "react-query"
 import { useUser } from "./useUser"
 import { QUERY_KEY } from "../constants"
 import { fetchData, getErrorMessage } from "../lib"
-import { CartItemFormatted } from "../types"
+import { Cart } from "../types"
 
 export const useCartItems = () => {
   const user = useUser()
   const userId = user?.id
   const {
-    data: cartItems,
-    isLoading: isCartItemsLoading,
-    isError: isCartItemsError,
+    data: cart,
+    isLoading: isCartLoading,
+    isError: isCartError,
     error,
-    status: cartItemsStatus,
+    status: cartStatus,
   } = useQuery(
     [QUERY_KEY.CART_ITEMS, userId],
-    () => fetchData<CartItemFormatted[]>(`/api/cart?user=${userId}`),
+    () => fetchData<Cart>(`/api/cart?user=${userId}`),
     {
       enabled: !!userId,
     }
   )
 
   return {
-    cartItems,
-    isCartItemsLoading,
-    isCartItemsError,
-    cartItemsError: getErrorMessage(error),
-    cartItemsStatus,
+    cart,
+    isCartLoading,
+    isCartError,
+    cartError: getErrorMessage(error),
+    cartStatus,
   }
 }

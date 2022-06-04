@@ -1,10 +1,10 @@
 import { NextApiHandler } from "next"
 import cookie from "cookie"
-import { fetchData, getErrorMessage, ApiError } from "../../../../lib"
-import { SignInResponse } from "../../../../types"
+import { fetchData, processServerError } from "../../../../lib"
+import { SignInResponse, UserShort, ErrorResponse } from "../../../../types"
 import { CMS_API } from "../../../../constants"
 
-type ReturnType = { id: number; name: string } | { error: { message: string } }
+type ReturnType = UserShort | ErrorResponse
 
 const handleGoogleAuth: NextApiHandler<ReturnType> = async (req, res) => {
   if (req.method !== "POST") {
@@ -28,9 +28,7 @@ const handleGoogleAuth: NextApiHandler<ReturnType> = async (req, res) => {
       )
       .json({ id: user.id, name: user.username })
   } catch (error) {
-    const message = getErrorMessage(error)
-    const status = (error as ApiError).status || 401
-    res.status(status).json({ error: { message } })
+    processServerError(error, res)
   }
 }
 

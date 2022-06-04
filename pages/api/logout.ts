@@ -3,14 +3,14 @@ import cookie from "cookie"
 
 type ReturnType = {}
 
-const handler: NextApiHandler<ReturnType> = async (req, res) => {
+const handleLogout: NextApiHandler<ReturnType> = async (req, res) => {
   if (req.method !== "GET") {
     res.status(405).end()
     return
   }
 
   res
-    .status(204)
+    .status(200)
     .setHeader(
       "Set-Cookie",
       cookie.serialize("jwt", "", {
@@ -21,4 +21,4 @@ const handler: NextApiHandler<ReturnType> = async (req, res) => {
     .json({})
 }
 
-export default handler
+export default handleLogout
