@@ -27,18 +27,20 @@ const CartItemsList = ({ cart, loading, error }: Props): JSX.Element => {
       </thead>
       <tbody>
         {cart &&
-          cart.items.map(({ id, quantity, product, total }) => (
-            <tr key={id} className="flex gap-4">
-              <td className="text-left min-w-[250px]">{product.title}</td>
-              <td className="text-right min-w-[70px]">
-                {displayPrice(product.price)}
-              </td>
-              <td className="text-right min-w-[100px]">{quantity}</td>
-              <td className="text-right min-w-[100px]">
-                {displayPrice(total)}
-              </td>
-            </tr>
-          ))}
+          cart.items.map(
+            ({ id, quantity, productTitle, productPrice, total }) => (
+              <tr key={id} className="flex gap-4">
+                <td className="text-left min-w-[250px]">{productTitle}</td>
+                <td className="text-right min-w-[70px]">
+                  {displayPrice(productPrice)}
+                </td>
+                <td className="text-right min-w-[100px]">{quantity}</td>
+                <td className="text-right min-w-[100px]">
+                  {displayPrice(total)}
+                </td>
+              </tr>
+            )
+          )}
       </tbody>
       {cart && (
         <tfoot>

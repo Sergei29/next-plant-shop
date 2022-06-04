@@ -154,11 +154,9 @@ export type CartItemRaw = Entity<{
 export type CartItemFormatted = {
   id: number
   quantity: number
-  product: {
-    id: number
-    title: string
-    price: number
-  }
+  productId: number
+  productTitle: string
+  productPrice: number
   total: number
 }
 
