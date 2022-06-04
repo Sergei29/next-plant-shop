@@ -1,8 +1,8 @@
 import {
   CartProduct,
-  CartUser,
   ApiCartPayloadType,
   CartItemRaw,
+  CartItemFormatted,
 } from "../types"
 
 export const stripCartProduct = ({
@@ -10,20 +10,18 @@ export const stripCartProduct = ({
   attributes: { title, price },
 }: CartProduct) => ({ id, title, price })
 
-export const stripCartUser = ({
-  id,
-  attributes: { username: name, email, provider },
-}: CartUser) => ({ id, name, email, provider })
-
 export const stripCartItem = ({
   id,
-  attributes: { quantity, user, product },
-}: CartItemRaw) => ({
+  attributes: { quantity, product },
+}: CartItemRaw): CartItemFormatted => ({
   id,
   quantity,
-  user: stripCartUser(user.data),
   product: stripCartProduct(product.data),
+  total: product.data.attributes.price * quantity,
 })
 
 export const formatCartPayload = ({ data }: ApiCartPayloadType) =>
   data.map(stripCartItem)
+
+export const getCartTotal = (cartItems: CartItemFormatted[]) =>
+  cartItems.reduce((grandTotal, current) => (grandTotal += current.total), 0)

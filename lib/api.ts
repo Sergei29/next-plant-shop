@@ -63,7 +63,10 @@ export const fetchData = async <T>(
   }
 }
 
-export const getErrorMessage = (error: ApiError | Error | any) => {
+export const getErrorMessage = (
+  error: ApiError | Error | null | any
+): string | null => {
+  if (error === null) return error
   let message = null
 
   if (error instanceof ApiError) {

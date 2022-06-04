@@ -7,8 +7,6 @@ import {
 } from "../../lib"
 import { CMS_API } from "../../constants"
 import {
-  UserRaw,
-  UserShort,
   ErrorResponse,
   ApiCartPayloadType,
   CartItemFormatted,
@@ -48,7 +46,7 @@ const handleCart: NextApiHandler<ReturnType> = async (req, res) => {
       const cart = formatCartPayload(cartPayload)
       res.status(200).json(cart)
     } catch (error) {
-      const message = getErrorMessage(error)
+      const message = getErrorMessage(error) as string
       const status = (error as ApiError).status || 401
       res.status(status).json({ error: { message } })
     }

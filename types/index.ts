@@ -171,17 +171,12 @@ export type CartItemRaw = {
 export type CartItemFormatted = {
   id: number
   quantity: number
-  user: {
-    id: number
-    name: string
-    email: string
-    provider: string
-  }
   product: {
     id: number
     title: string
     price: number
   }
+  total: number
 }
 
 export type ApiCartPayloadType = {

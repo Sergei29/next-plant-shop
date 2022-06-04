@@ -1,28 +1,24 @@
 import type { NextPage } from "next"
 import Head from "next/head"
+import { useRouter } from "next/router"
 import { useEffect } from "react"
-import { useQuery } from "react-query"
 import PageContainer from "../components/PageContainer"
-import { useUser } from "../hooks"
-import { fetchData } from "../lib"
-import { QUERY_KEY } from "../constants"
-import { CartItemFormatted } from "../types"
+import CartItemsList from "../components/CartItemsList"
+import { useCartItems, useUser } from "../hooks"
 
 type PageProps = {}
 
 const CartPage: NextPage<PageProps> = ({}) => {
   const user = useUser()
-  const userId = user?.id
-  const { data, isLoading, isError, error } = useQuery(
-    [QUERY_KEY.CART, userId],
-    () => fetchData<CartItemFormatted>(`/api/cart?user=${userId}`),
-    {
-      enabled: !!userId,
-    }
-  )
+  const { push } = useRouter()
+  const { cartItems, isCartItemsLoading, cartItemsError } = useCartItems()
+
   useEffect(() => {
-    console.log({ data })
-  }, [data])
+    if (!user) {
+      push("/")
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user])
 
   return (
     <>
@@ -34,6 +30,11 @@ const CartPage: NextPage<PageProps> = ({}) => {
 
       <PageContainer>
         <PageContainer.Title>Cart</PageContainer.Title>
+        <CartItemsList
+          items={cartItems}
+          loading={isCartItemsLoading}
+          error={cartItemsError}
+        />
       </PageContainer>
     </>
   )
