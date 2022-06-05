@@ -165,7 +165,25 @@ export type ApiCartPayloadType = {
   meta: ListMetaData
 }
 
+export type ApiPostCartPayloadType = {
+  data: CartItemRaw
+  meta: Record<string, any>
+}
+
 export type Cart = {
   items: CartItemFormatted[]
   total: number
+}
+
+export type CartItemRequestPayload = {
+  productId: number
+  userId: number
+  quantity: number
+}
+
+export type CartItemUpdatePayload = {
+  productId: number
+  userId: number
+  quantity: number
+  cartItemId: number
 }

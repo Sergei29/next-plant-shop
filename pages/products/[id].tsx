@@ -3,6 +3,8 @@ import Head from "next/head"
 import Image from "next/image"
 import { ParsedUrlQuery } from "querystring"
 import PageContainer from "../../components/PageContainer"
+import Button from "../../components/Button"
+import { REVALIDATE_PRODUCTS } from "../../constants"
 import { Product } from "../../types"
 import {
   getProductById,
@@ -10,7 +12,7 @@ import {
   ApiError,
   displayPrice,
 } from "../../lib"
-import { REVALIDATE_PRODUCTS } from "../../constants"
+import { useEditCart, useUser } from "../../hooks"
 
 type PageParams = {
   id: string
@@ -62,6 +64,11 @@ export const getStaticProps: GetStaticProps<Props, PageParams> = async ({
 }
 
 const ProductPage: NextPage<PageProps> = ({ product }) => {
+  const user = useUser()
+  const { handleAddProduct } = useEditCart()
+  const handleAdd = () => {
+    handleAddProduct({ productId: product.id })
+  }
   return (
     <>
       <Head>
@@ -86,6 +93,11 @@ const ProductPage: NextPage<PageProps> = ({ product }) => {
             <p className="text-lg font-bold mt-2">
               {displayPrice(product.price)}
             </p>
+            {user && (
+              <Button className="my-2" onClick={handleAdd}>
+                add to cart
+              </Button>
+            )}
           </div>
         </div>
       </PageContainer>
