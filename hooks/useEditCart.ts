@@ -10,9 +10,15 @@ import { fetchData, getErrorMessage } from "../lib"
 import { QUERY_KEY } from "../constants"
 import { useCartItems } from "./useCartItems"
 
-type EditCartItemArgs = {
+type EditCartProductArgs = {
   productId: number
   quantity?: number
+}
+
+type EditCartItemArgs = {
+  cartItemId: number
+  productId: number
+  newQuantity: number
 }
 
 const findCartItem = (productId: number, cart?: Cart) => {
@@ -96,7 +102,7 @@ export const useEditCart = () => {
   const handleAddProduct = async ({
     productId,
     quantity = 1,
-  }: EditCartItemArgs) => {
+  }: EditCartProductArgs) => {
     if (!user) return
     const cartItem = findCartItem(productId, cart)
     if (!cartItem) {
@@ -114,7 +120,7 @@ export const useEditCart = () => {
   const handleRemoveProduct = async ({
     productId,
     quantity = 1,
-  }: EditCartItemArgs) => {
+  }: EditCartProductArgs) => {
     const cartItem = findCartItem(productId, cart)
     if (!user || !cartItem) return
     const newQuantity = cartItem.quantity - quantity
@@ -132,9 +138,28 @@ export const useEditCart = () => {
     })
   }
 
+  const handleChangeCartItem = async ({
+    cartItemId,
+    productId,
+    newQuantity,
+  }: EditCartItemArgs) => {
+    if (!user) return
+    if (newQuantity < 1) {
+      await deleteItemAsync({ cartItemId })
+      return
+    }
+    await updateItemAsync({
+      productId,
+      userId: user.id,
+      quantity: newQuantity,
+      cartItemId,
+    })
+  }
+
   return {
     handleAddProduct,
     handleRemoveProduct,
+    handleChangeCartItem,
     loading,
     error: getAllErrors(createNewItemError, updateError, deleteError),
   }
