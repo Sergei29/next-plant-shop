@@ -1,6 +1,7 @@
 import React from "react"
 import { Cart } from "../../types"
 import { displayPrice } from "../../lib"
+import QuantityDisplay from "../QuantityDisplay"
 
 type Props = {
   cart?: Cart
@@ -9,6 +10,13 @@ type Props = {
 }
 
 const CartItemsList = ({ cart, loading, error }: Props): JSX.Element => {
+  const getQuantityHandler =
+    (itemId: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
+      const { value } = event.target
+      const newQuantity = parseInt(value, 10)
+      console.log({ itemId, newQuantity })
+    }
+
   if (loading) {
     return <p>loading your cart...</p>
   }
@@ -34,7 +42,14 @@ const CartItemsList = ({ cart, loading, error }: Props): JSX.Element => {
                 <td className="text-right min-w-[70px]">
                   {displayPrice(productPrice)}
                 </td>
-                <td className="text-right min-w-[100px]">{quantity}</td>
+                <td className="text-right min-w-[100px]">
+                  <QuantityDisplay
+                    value={quantity}
+                    onChange={getQuantityHandler(id)}
+                    min={0}
+                    max={50}
+                  />
+                </td>
                 <td className="text-right min-w-[100px]">
                   {displayPrice(total)}
                 </td>
