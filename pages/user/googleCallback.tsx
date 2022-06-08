@@ -11,7 +11,7 @@ const GoogleCallback = (): JSX.Element => {
   useEffect(() => {
     if (!router.query?.access_token) return
     const signIn = async () => {
-      const isSignedIn = await googleSignIn(router.query.access_token)
+      const isSignedIn = await googleSignIn(router.query.access_token as string)
       if (isSignedIn) router.push("/")
     }
     signIn()
