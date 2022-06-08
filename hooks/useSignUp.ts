@@ -3,6 +3,11 @@ import { SignUpCredentials, UserShort } from "../types"
 import { fetchData, getErrorMessage } from "../lib"
 import { QUERY_KEY } from "../constants"
 
+/**
+ * @description new user register custom hook
+ * @param {Function|undefined} onSuccess callback on success ( optional )
+ * @returns {Object} register handler and register api call status properties
+ */
 export const useSignUp = (onSuccess?: (...args: any[]) => void) => {
   const queryClient = useQueryClient()
 
@@ -17,6 +22,13 @@ export const useSignUp = (onSuccess?: (...args: any[]) => void) => {
       })
   )
 
+  /**
+   * @description sign-up handler
+   * @param {string} username username
+   * @param {string} email user email
+   * @param {string} password user password
+   * @returns {Promise<boolean>} promise , resolving to boolean(success or not)
+   */
   const signUp = async ({ username, email, password }: SignUpCredentials) => {
     try {
       const user = await mutateAsync({ username, email, password })
@@ -24,7 +36,9 @@ export const useSignUp = (onSuccess?: (...args: any[]) => void) => {
       onSuccess && onSuccess()
       return true
     } catch (error) {
-      // mutation.isError will be true
+      /**
+       * @description mutation.isError will be true
+       */
       return false
     }
   }

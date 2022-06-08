@@ -3,6 +3,11 @@ import { LoginCredentials, UserShort } from "../types"
 import { fetchData, getErrorMessage } from "../lib"
 import { QUERY_KEY } from "../constants"
 
+/**
+ * @description user sign-in custom hook
+ * @param {Function|undefined} onSuccess callback on success ( optional )
+ * @returns {Object} sign-in handler and sign-in api call status properties
+ */
 export const useSignIn = (onSuccess?: (...args: any[]) => void) => {
   const queryClient = useQueryClient()
 
@@ -17,6 +22,12 @@ export const useSignIn = (onSuccess?: (...args: any[]) => void) => {
       })
   )
 
+  /**
+   * @description user login function
+   * @param {string} email user email
+   * @param {string} password user password
+   * @returns {Promise<boolean>} promise , resolving to boolean(success or not)
+   */
   const signIn = async ({ email, password }: LoginCredentials) => {
     try {
       const user = await mutateAsync({ email, password })
@@ -24,7 +35,9 @@ export const useSignIn = (onSuccess?: (...args: any[]) => void) => {
       onSuccess && onSuccess()
       return true
     } catch (error) {
-      // mutation.isError will be true
+      /**
+       * @description mutation.isError will be true
+       */
       return false
     }
   }

@@ -1,4 +1,4 @@
-import React, { ComponentProps } from "react"
+import React from "react"
 import clsx from "clsx"
 import Link, { LinkProps } from "next/link"
 
@@ -7,6 +7,11 @@ type Props = {
   className?: string
 } & LinkProps
 
+/**
+ * @description authentication Link button
+ * @param {Object} props component props
+ * @returns {JSX.Element} auth link markup for sign-in/sing-up
+ */
 const AuthButton = ({
   children,
   className,

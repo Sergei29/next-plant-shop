@@ -3,6 +3,11 @@ import clsx from "clsx"
 
 type Props = {} & ComponentProps<"button">
 
+/**
+ * @description custom button
+ * @param {Object} props component props
+ * @returns {JSX.Element} markup for custom button
+ */
 const Button = ({
   children,
   className = "",

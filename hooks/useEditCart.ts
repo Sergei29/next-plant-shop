@@ -21,11 +21,24 @@ type EditCartItemArgs = {
   newQuantity: number
 }
 
+/**
+ * @description util: find cart item by product ID
+ * @param {number} productId product ID
+ * @param {Object|undefined} cart shopping cart object ( can be `undefined` )
+ * @returns {Object|null} cart item found or `null`
+ */
 const findCartItem = (productId: number, cart?: Cart) => {
   if (!cart) return null
   return cart.items.find((item) => item.productId === productId) || null
 }
 
+/**
+ * @description util: aggregates all possible `catch` block errors into one error message
+ * @param {unknown} errorCreate create cart item error
+ * @param {unknown} errorUpdate update cart item eror
+ * @param {unknown} errorDelete delete cart item error
+ * @returns {string|null} error message or `null` if nothing
+ */
 const getAllErrors = (
   errorCreate: unknown,
   errorUpdate: unknown,
@@ -43,6 +56,10 @@ const getAllErrors = (
   return null
 }
 
+/**
+ * @description edit shopping cart custom hook
+ * @returns {Object} edit cart handler functions and status properties
+ */
 export const useEditCart = () => {
   const user = useUser()
   const queryClient = useQueryClient()
@@ -60,7 +77,10 @@ export const useEditCart = () => {
       }),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(QUERY_KEY.CART_ITEMS) // refetching 'cartItems'
+        /**
+         * @description refetching 'cartItems'
+         */
+        queryClient.invalidateQueries(QUERY_KEY.CART_ITEMS)
       },
     }
   )
@@ -77,7 +97,10 @@ export const useEditCart = () => {
       }),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(QUERY_KEY.CART_ITEMS) // refetching 'cartItems'
+        /**
+         * @description refetching 'cartItems'
+         */
+        queryClient.invalidateQueries(QUERY_KEY.CART_ITEMS)
       },
     }
   )
@@ -93,12 +116,21 @@ export const useEditCart = () => {
       }),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(QUERY_KEY.CART_ITEMS) // refetching 'cartItems'
+        /**
+         * @description refetching 'cartItems'
+         */
+        queryClient.invalidateQueries(QUERY_KEY.CART_ITEMS)
       },
     }
   )
   const loading = updateLoading || createNewLoading || deleteLoading
 
+  /**
+   * @description add product to cart
+   * @param {number} productId product ID
+   * @param {number} quantity quantity ( optional, defaults to 1 )
+   * @returns {Promise<undefined>} void promise, makes api call
+   */
   const handleAddProduct = async ({
     productId,
     quantity = 1,
@@ -117,6 +149,12 @@ export const useEditCart = () => {
     })
   }
 
+  /**
+   * @description removes product from cart
+   * @param {number} productId product ID
+   * @param {number} quantity quantity ( optional, defaults to 1 )
+   * @returns {Promise<undefined>} void promise, makes api call
+   */
   const handleRemoveProduct = async ({
     productId,
     quantity = 1,
@@ -138,6 +176,13 @@ export const useEditCart = () => {
     })
   }
 
+  /**
+   *  @description updates product's quantity inside the cart item
+   * @param {number} cartItemId cart item's ID
+   * @param {number} productId product's ID
+   * @param {number} newQuantity new quantity
+   * @returns {Promise<undefined>} void promise, makes api call
+   */
   const handleChangeCartItem = async ({
     cartItemId,
     productId,
