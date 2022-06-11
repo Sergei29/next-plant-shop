@@ -17,6 +17,12 @@ import {
 type GetReturnType = Cart | ErrorResponse
 type PostReturnType = CartItemFormatted | ErrorResponse
 
+/**
+ * @description get shopping cart handler
+ * @param {object} req request obj
+ * @param {object} res response obj
+ * @returns {Promise<undefined>} void promise, api response
+ */
 const handleGetCart: NextApiHandler<GetReturnType> = async (req, res) => {
   const { jwt } = req.cookies
   const userId = req.query.user
@@ -44,6 +50,12 @@ const handleGetCart: NextApiHandler<GetReturnType> = async (req, res) => {
   }
 }
 
+/**
+ * @description post/update shopping cart handler
+ * @param {object} req request obj
+ * @param {object} res response obj
+ * @returns {Promise<undefined>} void promise, api response
+ */
 const handlePostCart: NextApiHandler<PostReturnType> = async (req, res) => {
   const { productId, userId, quantity } = req.body
   const { jwt } = req.cookies
@@ -81,6 +93,12 @@ const handlePostCart: NextApiHandler<PostReturnType> = async (req, res) => {
   }
 }
 
+/**
+ * @description shopping cart handler for authenticated user
+ * @param {object} req request obj
+ * @param {object} res response obj
+ * @returns {Promise<undefined>} void promise, api response
+ */
 const handleCart: NextApiHandler<GetReturnType | PostReturnType> = async (
   req,
   res

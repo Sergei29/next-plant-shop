@@ -5,7 +5,14 @@ import RegisterForm from "../components/RegisterForm"
 import AuthButton from "../components/AuthButton"
 import GoogleLogin from "../components/GoogleLogin"
 
-const RegisterPage: NextPage = () => {
+type PageProps = {}
+
+/**
+ * @description next page component
+ * @param {object} props page props
+ * @returns {JSX.Element} new user register page
+ */
+const RegisterPage: NextPage<PageProps> = ({}) => {
   return (
     <>
       <Head>

@@ -5,6 +5,12 @@ import { UserRaw, UserShort, ErrorResponse } from "../../types"
 
 type ReturnType = UserShort | ErrorResponse
 
+/**
+ * @description get current authenticated user info handler
+ * @param {object} req request obj
+ * @param {object} res response obj
+ * @returns {Promise<undefined>} void promise, api response
+ */
 const handleUser: NextApiHandler<ReturnType> = async (req, res) => {
   if (req.method !== "GET") {
     res.status(405).end()

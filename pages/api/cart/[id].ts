@@ -10,6 +10,12 @@ import {
 type DeleteReturnType = { id: number }
 type ReturnType = CartItemFormatted | DeleteReturnType | ErrorResponse
 
+/**
+ * @description update existing cart item handler
+ * @param {object} req request obj
+ * @param {object} res response obj
+ * @returns {Promise<undefined>} void promise, api response
+ */
 const handleEditCartItem: NextApiHandler<ReturnType> = async (req, res) => {
   const { jwt } = req.cookies
   const itemId = req.query.id as string
@@ -53,6 +59,12 @@ const handleEditCartItem: NextApiHandler<ReturnType> = async (req, res) => {
   }
 }
 
+/**
+ * @description delete existing cart item handler
+ * @param {object} req request obj
+ * @param {object} res response obj
+ * @returns {Promise<undefined>} void promise, api response
+ */
 const handleDeleteCartItem: NextApiHandler<DeleteReturnType> = async (
   req,
   res
@@ -79,6 +91,12 @@ const handleDeleteCartItem: NextApiHandler<DeleteReturnType> = async (
   }
 }
 
+/**
+ * @description existing cart item handler
+ * @param {object} req request obj
+ * @param {object} res response obj
+ * @returns {Promise<undefined>} void promise, api response
+ */
 const handleCartItem: NextApiHandler<ReturnType> = async (req, res) => {
   if (!req.cookies.jwt) {
     res

@@ -5,7 +5,14 @@ import SignInForm from "../components/SignInForm"
 import AuthButton from "../components/AuthButton"
 import GoogleLogin from "../components/GoogleLogin"
 
-const SignInPage: NextPage = () => {
+type PageProps = {}
+
+/**
+ * @description next page component
+ * @param {object} props page props
+ * @returns {JSX.Element} existing user login page
+ */
+const SignInPage: NextPage<PageProps> = ({}) => {
   return (
     <>
       <Head>

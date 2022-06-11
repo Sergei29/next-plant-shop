@@ -9,6 +9,11 @@ import { useCartItems, useUser } from "../hooks"
 
 type PageProps = {}
 
+/**
+ * @description next page component
+ * @param {object} props page props
+ * @returns {JSX.Element} shopping cart page
+ */
 const CartPage: NextPage<PageProps> = ({}) => {
   const user = useUser()
   const { push } = useRouter()

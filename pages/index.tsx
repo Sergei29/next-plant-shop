@@ -33,6 +33,11 @@ export const getStaticProps: GetStaticProps<Props> = async (ctx) => {
   }
 }
 
+/**
+ * @description next page component
+ * @param {object} props page props
+ * @returns {JSX.Element} home page, products list
+ */
 const Home: NextPage<PageProps> = ({ products }) => {
   return (
     <>

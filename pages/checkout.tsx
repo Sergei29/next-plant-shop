@@ -7,6 +7,11 @@ import PageContainer from "../components/PageContainer"
 
 type PageProps = {}
 
+/**
+ * @description next page component
+ * @param {object} props page props
+ * @returns {JSX.Element} checkout page
+ */
 const CheckoutPage: NextPage<PageProps> = ({}) => {
   const user = useUser()
   const { push } = useRouter()
