@@ -6,16 +6,19 @@ type Props = {
   children: React.ReactNode
 }
 
-const PageContainer = ({ children }: Props): JSX.Element => {
-  return (
-    <>
-      <header>
-        <NavBar />
-      </header>
-      <main className="px-6 py-4">{children}</main>
-    </>
-  )
-}
+/**
+ * @description page container component
+ * @param {React.ReactNode} children nested children components
+ * @returns {JSX.Element} page markup, header and main
+ */
+const PageContainer = ({ children }: Props): JSX.Element => (
+  <>
+    <header>
+      <NavBar />
+    </header>
+    <main className="px-6 py-4">{children}</main>
+  </>
+)
 
 PageContainer.Title = Title
 

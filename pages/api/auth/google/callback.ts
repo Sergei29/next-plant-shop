@@ -6,6 +6,12 @@ import { CMS_API } from "../../../../constants"
 
 type ReturnType = UserShort | ErrorResponse
 
+/**
+ * @description google logic via strapi callback handler
+ * @param {object} req request obj
+ * @param {object} res response obj
+ * @returns {Promise<undefined>} void promise, api response
+ */
 const handleGoogleAuth: NextApiHandler<ReturnType> = async (req, res) => {
   if (req.method !== "POST") {
     res.status(405).end()

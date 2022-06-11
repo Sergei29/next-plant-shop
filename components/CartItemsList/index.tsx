@@ -10,6 +10,11 @@ type Props = {
   error: string | null
 }
 
+/**
+ * @description cart items list
+ * @param {Object} props component props
+ * @returns {JSX.Element} markup for table listing all cart
+ */
 const CartItemsList = ({ cart, loading, error }: Props): JSX.Element => {
   const {
     handleChangeCartItem,
@@ -17,6 +22,12 @@ const CartItemsList = ({ cart, loading, error }: Props): JSX.Element => {
     error: errorEdit,
   } = useEditCart()
 
+  /**
+   * @description generate change quantity handler
+   * @param {number} cartItemId cart itme ID
+   * @param {number} productId product ID
+   * @returns {Function} quantity handler function
+   */
   const getQuantityHandler =
     (cartItemId: number, productId: number) =>
     async (event: React.ChangeEvent<HTMLInputElement>) => {

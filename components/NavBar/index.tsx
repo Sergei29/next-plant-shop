@@ -3,6 +3,11 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import { useUser, useSignOut } from "../../hooks"
 
+/**
+ * @description navigation bar component
+ * @param {Object} props component props
+ * @returns {JSX.Element} markup for app navbar
+ */
 const NavBar = (): JSX.Element => {
   const { pathname } = useRouter()
   const user = useUser()

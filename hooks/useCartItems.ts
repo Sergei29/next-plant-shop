@@ -4,6 +4,10 @@ import { QUERY_KEY } from "../constants"
 import { fetchData, getErrorMessage } from "../lib"
 import { Cart } from "../types"
 
+/**
+ * @description get shopping cart custom hook
+ * @returns {Object} cart data and fetching status properties
+ */
 export const useCartItems = () => {
   const user = useUser()
   const userId = user?.id

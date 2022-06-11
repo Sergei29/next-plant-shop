@@ -63,6 +63,11 @@ export const getStaticProps: GetStaticProps<Props, PageParams> = async ({
   }
 }
 
+/**
+ * @description next page component
+ * @param {object} props page props
+ * @returns {JSX.Element} product details page
+ */
 const ProductPage: NextPage<PageProps> = ({ product }) => {
   const user = useUser()
   const { handleAddProduct } = useEditCart()

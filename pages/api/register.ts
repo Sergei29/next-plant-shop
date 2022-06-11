@@ -6,6 +6,12 @@ import { fetchData, processServerError } from "../../lib"
 
 type ReturnType = UserShort | ErrorResponse
 
+/**
+ * @description new user register with email and password handler
+ * @param {object} req request obj
+ * @param {object} res response obj
+ * @returns {Promise<undefined>} void promise, api response
+ */
 const handleRegister: NextApiHandler<ReturnType> = async (req, res) => {
   if (req.method !== "POST") {
     res.status(405).end()

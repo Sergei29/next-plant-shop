@@ -2,6 +2,10 @@ import axios, { AxiosError, AxiosResponse, AxiosRequestConfig } from "axios"
 import { NextApiResponse } from "next"
 import { ERROR_MSG } from "../constants"
 
+/**
+ * @description dev.util: generates server side error
+ * @returns {AxiosError} instance of axios error
+ */
 export const generateServerError = () => {
   const res: AxiosResponse = {
     status: 501,
@@ -13,6 +17,10 @@ export const generateServerError = () => {
   return new AxiosError("Server error", "501", undefined, undefined, res)
 }
 
+/**
+ * @description dev.util: generates wrong request error
+ * @returns {AxiosError} instance of axios error
+ */
 export const generateWrongRequestError = () => {
   const res: AxiosResponse = {
     status: 404,
@@ -25,7 +33,7 @@ export const generateWrongRequestError = () => {
 }
 
 /**
- * @description (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error)
+ * @description custom error class (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error)
  */
 export class ApiError extends Error {
   status: number
@@ -41,6 +49,12 @@ export class ApiError extends Error {
   }
 }
 
+/**
+ * @description util: fetching data function
+ * @param {string} url resource URL
+ * @param {Object} config api call configuration
+ * @returns {Promise} promise, resolving to a generic type depending on use case
+ */
 export const fetchData = async <T>(
   url: string,
   config: AxiosRequestConfig = {}
@@ -64,6 +78,11 @@ export const fetchData = async <T>(
   }
 }
 
+/**
+ * @description util: extracts error message from a possible error response
+ * @param { ApiError|Error|null|any } error a possible error
+ * @returns {string|null} error message, if any
+ */
 export const getErrorMessage = (
   error: ApiError | Error | null | any
 ): string | null => {
@@ -79,6 +98,11 @@ export const getErrorMessage = (
   return message || ERROR_MSG.default
 }
 
+/**
+ * @description util: extracts error message from a possible error response from API
+ * @param { Error | AxiosError | any } error a possible error
+ * @returns {string|null} error message, if any
+ */
 export function getErrorMessageFromApi(error: Error | AxiosError | any) {
   let errorMessage: string | null = null
 
@@ -97,6 +121,12 @@ export function getErrorMessageFromApi(error: Error | AxiosError | any) {
   return errorMessage
 }
 
+/**
+ * @description util: reusable error handling in `catch(e){}` block for API route handler, to be used inside the catch block
+ * @param {unknown} error error response
+ * @param {NextApiResponse} res next API response object
+ * @returns {undefined} creates API response in case of error occurence
+ */
 export const processServerError = (error: unknown, res: NextApiResponse) => {
   const message = getErrorMessage(error) as string
   const status = (error as ApiError).status || 401

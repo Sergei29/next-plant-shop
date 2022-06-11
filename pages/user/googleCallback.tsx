@@ -3,6 +3,10 @@ import { useRouter } from "next/router"
 import PageContainer from "../../components/PageContainer"
 import { useSignInGoogle } from "../../hooks"
 
+/**
+ * @description next page component
+ * @returns {JSX.Element} google login callback page to capture URL params with `access_token`
+ */
 const GoogleCallback = (): JSX.Element => {
   const router = useRouter()
   const { googleSignIn, gSignInError, gSignInLoading, gSignInStatus } =
@@ -11,7 +15,7 @@ const GoogleCallback = (): JSX.Element => {
   useEffect(() => {
     if (!router.query?.access_token) return
     const signIn = async () => {
-      const isSignedIn = await googleSignIn(router.query.access_token)
+      const isSignedIn = await googleSignIn(router.query.access_token as string)
       if (isSignedIn) router.push("/")
     }
     signIn()

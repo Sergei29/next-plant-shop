@@ -3,6 +3,11 @@ import { UserShort } from "../types"
 import { fetchData, getErrorMessage } from "../lib"
 import { QUERY_KEY } from "../constants"
 
+/**
+ * @description user sign-in with Google custom hook
+ * @param {Function|undefined} onSuccess callback on success ( optional )
+ * @returns {Object} sign-in handler and sign-in api call status properties
+ */
 export const useSignInGoogle = (onSuccess?: (...args: any[]) => void) => {
   const queryClient = useQueryClient()
 
@@ -17,14 +22,21 @@ export const useSignInGoogle = (onSuccess?: (...args: any[]) => void) => {
       })
   )
 
-  const googleSignIn = async (access_token: any) => {
+  /**
+   * @description google sign-in calllback
+   * @param {string} accessToken access token returned by CMS service in login success
+   * @returns {Promise<boolean>} promise , resolving to boolean(success or not)
+   */
+  const googleSignIn = async (accessToken: string) => {
     try {
-      const user = await mutateAsync(access_token)
+      const user = await mutateAsync(accessToken)
       queryClient.setQueryData(QUERY_KEY.USER, user)
       onSuccess && onSuccess()
       return true
     } catch (error) {
-      // mutation.isError will be true
+      /**
+       * @description mutation.isError will be true
+       */
       return false
     }
   }
