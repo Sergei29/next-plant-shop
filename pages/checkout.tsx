@@ -4,6 +4,7 @@ import { useRouter } from "next/router"
 import { useEffect } from "react"
 import { useCartItems, useUser } from "../hooks"
 import PageContainer from "../components/PageContainer"
+import CheckoutForm from "../components/CheckoutForm"
 
 type PageProps = {}
 
@@ -27,6 +28,7 @@ const CheckoutPage: NextPage<PageProps> = ({}) => {
 
       <PageContainer>
         <PageContainer.Title>Checkout page</PageContainer.Title>
+        <CheckoutForm />
       </PageContainer>
     </>
   )
