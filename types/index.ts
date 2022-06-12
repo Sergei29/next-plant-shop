@@ -187,3 +187,16 @@ export type CartItemUpdatePayload = {
   quantity: number
   cartItemId: number
 }
+
+export type DeliveryAddressType = {
+  name: string
+  street: string
+  postcode: string
+  city: string
+  email: string
+}
+
+export enum CheckoutResult {
+  success = "success",
+  cancel = "cancel",
+}

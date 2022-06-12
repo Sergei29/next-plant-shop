@@ -28,7 +28,6 @@ const CheckoutPage: NextPage<PageProps> = ({}) => {
 
       <PageContainer>
         <PageContainer.Title>Checkout page</PageContainer.Title>
-        <CheckoutForm />
       </PageContainer>
     </>
   )

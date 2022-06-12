@@ -3,6 +3,12 @@ import { useMutation } from "react-query"
 import Stripe from "stripe"
 import { fetchData, getErrorMessage } from "../lib"
 import { getStripe } from "../lib/stripe"
+import { Cart, DeliveryAddressType } from "../types"
+
+type CheckoutInput = {
+  cart: Cart
+  address: DeliveryAddressType
+}
 
 export const useCheckout = () => {
   const [loading, setLoading] = useState(false)
@@ -16,21 +22,21 @@ export const useCheckout = () => {
     data,
     isError: isSessionError,
     error: sessionError,
-  } = useMutation(async (amount: number) =>
+  } = useMutation(async (input: CheckoutInput) =>
     fetchData<Stripe.Checkout.Session>("/api/checkout_sessions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      data: { amount },
+      data: { ...input },
     })
   )
 
-  const handleSubmitPayment = async (amount: number) => {
+  const handleSubmitPayment = async (checkoutData: CheckoutInput) => {
     // Create a Checkout Session.
     setLoading(true)
     setStripeErrorMessage(null)
-    const session = await mutateAsync(amount)
+    const session = await mutateAsync(checkoutData)
 
     if (isSessionError && !statusRef.current.willUnmount) {
       setLoading(false)

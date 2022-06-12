@@ -1,53 +1,101 @@
-import React, { useState } from "react"
-import { CURRENCY, MIN_AMOUNT, MAX_AMOUNT, AMOUNT_STEP } from "../../constants"
+import React, { useState, ComponentPropsWithoutRef } from "react"
+import { CURRENCY } from "../../constants"
 import { formatAmountForDisplay } from "../../lib/stripe"
 import { useCheckout } from "../../hooks"
+import { DeliveryAddressType, Cart } from "../../types"
 import StripeTestCards from "./components/StripeTestCards"
-import CustomDonationInput from "./components/CustomDonationInput"
+import Input from "../Input"
+import Field from "../Field"
+import Button from "../Button"
+import { handleValidateForm } from "./helpers"
 
-type Props = {}
+const INITIAl_FORM_STATE = {
+  name: "",
+  street: "",
+  postcode: "",
+  city: "",
+  email: "",
+}
 
-const CheckoutForm = ({}: Props): JSX.Element => {
-  const [input, setInput] = useState({
-    customDonation: Math.round(MAX_AMOUNT / AMOUNT_STEP),
-  })
+type Props = { cart: Cart } & ComponentPropsWithoutRef<"div">
+
+const CheckoutForm = ({ cart, ...restDivProps }: Props): JSX.Element => {
+  const [address, setAddress] =
+    useState<DeliveryAddressType>(INITIAl_FORM_STATE)
   const { handleSubmitPayment, loading, error } = useCheckout()
 
   const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = (e) =>
-    setInput({
-      ...input,
-      [e.currentTarget.name]: e.currentTarget.value,
-    })
+    setAddress((current) => ({
+      ...current,
+      [e.target.name]: e.target.value,
+    }))
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
-    handleSubmitPayment(input.customDonation)
+    handleSubmitPayment({
+      address,
+      cart,
+    })
   }
 
+  const isValid = handleValidateForm(address)
+
   return (
-    <>
+    <div {...restDivProps}>
       <form onSubmit={handleSubmit}>
-        <CustomDonationInput
-          className="checkout-style"
-          name={"customDonation"}
-          value={input.customDonation}
-          min={MIN_AMOUNT}
-          max={MAX_AMOUNT}
-          step={AMOUNT_STEP}
-          currency={CURRENCY}
-          onChange={handleInputChange}
-        />
+        <h2>Delivery address</h2>
+        <Field label="Name">
+          <Input
+            type="text"
+            name="name"
+            placeholder="Recipient name"
+            required
+            onChange={handleInputChange}
+          />
+        </Field>
+        <Field label="Street">
+          <Input
+            type="text"
+            name="street"
+            placeholder="Street, house number, appartment"
+            required
+            onChange={handleInputChange}
+          />
+        </Field>
+        <Field label="Postcode">
+          <Input
+            type="text"
+            name="postcode"
+            placeholder="Postcode"
+            required
+            onChange={handleInputChange}
+          />
+        </Field>
+        <Field label="City">
+          <Input
+            type="text"
+            name="city"
+            placeholder="City/town"
+            onChange={handleInputChange}
+          />
+        </Field>
+        <Field label="Email">
+          <Input
+            type="email"
+            name="email"
+            placeholder="Recipient email"
+            required
+            onChange={handleInputChange}
+          />
+        </Field>
+
         <StripeTestCards />
-        <button
-          className="checkout-style-background"
-          type="submit"
-          disabled={loading}
-        >
-          Donate {formatAmountForDisplay(input.customDonation, CURRENCY)}
-        </button>
+        <Button type="submit" disabled={!isValid || loading}>
+          pay {formatAmountForDisplay(cart.total, CURRENCY)}
+        </Button>
       </form>
       {error && <p className="text-red-600 font-bold">{error}</p>}
-    </>
+    </div>
   )
 }
 

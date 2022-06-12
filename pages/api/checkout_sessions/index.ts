@@ -1,14 +1,9 @@
 import { NextApiHandler } from "next"
 import Stripe from "stripe"
-import {
-  CURRENCY,
-  MIN_AMOUNT,
-  MAX_AMOUNT,
-  STRIPE_SECRET_KEY,
-} from "../../../constants"
-import { formatAmountForStripe } from "../../../lib/stripe"
+import { MIN_AMOUNT, MAX_AMOUNT, STRIPE_SECRET_KEY } from "../../../constants"
+import { formatCartItemsForStripe } from "../../../lib/stripe"
 import { processServerError } from "../../../lib"
-import { ErrorResponse } from "../../../types"
+import { ErrorResponse, Cart, DeliveryAddressType } from "../../../types"
 
 /**
  * @description https://github.com/stripe/stripe-node#configuration
@@ -30,34 +25,45 @@ const handleCheckoutSession: NextApiHandler<ReturnType> = async (req, res) => {
     res.status(405).end()
     return
   }
-  const amount: number = req.body.amount
+  const cart: Cart = req.body.cart
+  const address: DeliveryAddressType = req.body.address
+
+  /**
+   * @description Validate the checkout payload passed from the client.
+   */
+  if (!cart || !address) {
+    res.status(401).json({
+      error: {
+        message:
+          "Invalid payload. Expected { cart:<ShoppingCart>, address:<eDeliveryAddress> }",
+      },
+    })
+    return
+  }
+  if (!(cart.total >= MIN_AMOUNT && cart.total <= MAX_AMOUNT)) {
+    res.status(401).json({ error: { message: "Invalid amount." } })
+    return
+  }
 
   try {
-    /**
-     * @description Validate the amount that was passed from the client.
-     */
-    if (!(amount >= MIN_AMOUNT && amount <= MAX_AMOUNT)) {
-      throw new Error("Invalid amount.")
-    }
     /**
      * @description Create Checkout Sessions from body params.
      */
     const params: Stripe.Checkout.SessionCreateParams = {
-      submit_type: "donate",
+      mode: "payment",
       payment_method_types: ["card"],
-      line_items: [
-        {
-          name: "Custom amount donation",
-          amount: formatAmountForStripe(amount, CURRENCY),
-          currency: CURRENCY,
-          quantity: 1,
-        },
-      ],
-      success_url: `${req.headers.origin}/result?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${req.headers.origin}/donate-with-checkout`,
+      line_items: formatCartItemsForStripe(cart.items),
+      success_url: `${req.headers.origin}?status=success`,
+      cancel_url: `${req.headers.origin}/cart?status=cancel`,
+      payment_intent_data: {
+        receipt_email: address.email,
+      },
     }
     const checkoutSession: Stripe.Checkout.Session =
       await stripe.checkout.sessions.create(params)
+
+    console.log({ address })
+
     res.status(200).json(checkoutSession)
   } catch (err) {
     processServerError(err, res)

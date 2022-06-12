@@ -1,3 +1,7 @@
+import Stripe from "stripe"
+import { CartItemFormatted } from "../../types"
+import { CURRENCY } from "../../constants/stripe"
+
 /**
  * @description util: formats number to price display currency format
  * @param {number} amount amount
@@ -69,3 +73,14 @@ export const formatAmountFromStripe = (
 
   return isZeroDecimalCurrency ? amount : Math.round(amount / 100)
 }
+
+export const formatCartItemsForStripe = (
+  items: CartItemFormatted[],
+  currency = CURRENCY
+): Stripe.Checkout.SessionCreateParams.LineItem[] =>
+  items.map(({ quantity, productPrice, productTitle }) => ({
+    name: productTitle,
+    amount: formatAmountForStripe(productPrice, CURRENCY),
+    currency,
+    quantity,
+  }))
