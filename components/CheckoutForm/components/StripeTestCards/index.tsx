@@ -1,5 +1,9 @@
 import React from "react"
 
+/**
+ * @description Stripe test card
+ * @returns {JSX.Element} component markup
+ */
 const StripeTestCards = (): JSX.Element => (
   <div
     style={{

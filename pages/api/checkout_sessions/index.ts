@@ -7,14 +7,24 @@ import {
   STRIPE_SECRET_KEY,
 } from "../../../constants"
 import { formatAmountForStripe } from "../../../lib/stripe"
+import { processServerError } from "../../../lib"
+import { ErrorResponse } from "../../../types"
 
+/**
+ * @description https://github.com/stripe/stripe-node#configuration
+ */
 const stripe = new Stripe(STRIPE_SECRET_KEY, {
-  // https://github.com/stripe/stripe-node#configuration
   apiVersion: "2020-08-27",
 })
 
-type ReturnType = {}
+type ReturnType = Stripe.Checkout.Session | ErrorResponse
 
+/**
+ * @description user checkout session handler
+ * @param {object} req request obj
+ * @param {object} res response obj
+ * @returns {Promise<undefined>} void promise, api response, creates Stripe payment session, redirects app to either success page or error page
+ */
 const handleCheckoutSession: NextApiHandler<ReturnType> = async (req, res) => {
   if (req.method !== "POST") {
     res.status(405).end()
@@ -50,9 +60,7 @@ const handleCheckoutSession: NextApiHandler<ReturnType> = async (req, res) => {
       await stripe.checkout.sessions.create(params)
     res.status(200).json(checkoutSession)
   } catch (err) {
-    const errorMessage =
-      err instanceof Error ? err.message : "Internal server error"
-    res.status(500).json({ statusCode: 500, message: errorMessage })
+    processServerError(err, res)
   }
 }
 
