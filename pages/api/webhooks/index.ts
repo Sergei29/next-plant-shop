@@ -7,7 +7,11 @@ import {
   CMS_API,
 } from "../../../constants"
 import { fetchData } from "../../../lib"
-import { formatCheckoutSessionCompleted } from "../../../lib/stripe"
+import {
+  formatCheckoutSessionCompleted,
+  formatSessionToOrder,
+  getPaymentSuccessEmailContent,
+} from "../../../lib/stripe"
 import { StripeCheckoutSession, StripeEvent } from "../../../types"
 
 export const config = {
@@ -53,26 +57,40 @@ const handleStripeWebhook: NextApiHandler<ReturnType> = async (req, res) => {
   // 2. email the sustomer success email
 
   if (event.type === "checkout.session.completed") {
-    console.log("event.constructor.name: ", event.constructor.name)
-
-    console.log(
-      "formatted response: ",
-      formatCheckoutSessionCompleted(
-        event as StripeEvent<StripeCheckoutSession>
-      )
+    const sessionFormatted = formatCheckoutSessionCompleted(
+      event as StripeEvent<StripeCheckoutSession>
     )
+    const newOrder = formatSessionToOrder(sessionFormatted)
+    const data = {
+      data: newOrder,
+    }
+
+    try {
+      fetchData(`${CMS_API}/orders`, {
+        method: "POST",
+        data,
+      })
+    } catch (error) {
+      const message = (error as Error).message
+      console.log(`Error creating new order: ${message}`)
+      res.status(200).end()
+    }
+
+    try {
+      fetchData(`${CMS_API}/email`, {
+        method: "POST",
+        data: {
+          to: sessionFormatted.customerEmail,
+          subject: `TEST payment succeeded on next-plant-shop`,
+          html: getPaymentSuccessEmailContent(sessionFormatted),
+        },
+      })
+    } catch (error) {
+      const message = (error as Error).message
+      console.log(`Error creating new order: ${message}`)
+      res.status(200).end()
+    }
   }
-
-  // try {
-  //   fetchData(`${CMS_API}/email`,{
-  //     method: 'POST',
-  //     data:{
-  //       to: ''
-  //     }
-  //   })
-  // } catch (error) {
-
-  // }
 
   res.status(200).end()
 }

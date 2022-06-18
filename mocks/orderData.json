@@ -1,0 +1,20 @@
+{
+  "paymentIntent": "pi_3LC5VQDbSisacWIG0VhURpZ0",
+  "fulfilled": false,
+  "currency": "usd",
+  "amountTotal": 16,
+  "customerName": "SERGEJS BASANGOVS",
+  "customerEmail": "sergejs.basangovs@gmail.com",
+  "shippingAddress": {
+    "name": "SERGEJS BASANGOVS",
+    "line1": "2 Advent Way, The Mews",
+    "line2": "Flat 88",
+    "city": "Manchester",
+    "postCode": "M4 7LL",
+    "country": "GB"
+  },
+  "orderItems": [
+    { "title": "Aloe Vera ", "price": 8, "quantity": 1 },
+    { "title": "ZZ Plant", "price": 8, "quantity": 1 }
+  ]
+}

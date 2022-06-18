@@ -104,6 +104,7 @@ export type StripeSessionSuccessFormatted = {
   type: string
   paymentIntent: string
   status: "open" | "complete" | "expired"
+  currency: string
   amountTotal: number
   customerName: string
   customerEmail: string
@@ -114,6 +115,28 @@ export type StripeSessionSuccessFormatted = {
     city: string
     postCode: string
     country: null | string
+  }
+  orderItems: {
+    title: string
+    price: number
+    quantity: number
+  }[]
+}
+
+export type OrderType = {
+  fulfilled: boolean
+  paymentIntentReference: string
+  currency: string
+  amountTotal: number
+  customerName: string
+  customerEmail: string
+  shippingAddress: {
+    name: string
+    line1: string
+    line2: string
+    city: string
+    postCode: string
+    country: string | null
   }
   orderItems: {
     title: string
