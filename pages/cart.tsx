@@ -1,12 +1,11 @@
 import type { NextPage } from "next"
 import Head from "next/head"
 import { useRouter } from "next/router"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import PageContainer from "../components/PageContainer"
 import CartItemsList from "../components/CartItemsList"
 import Button from "../components/Button"
-import CheckoutForm from "../components/CheckoutForm"
-import { useCartItems, useUser } from "../hooks"
+import { useCartItems, useUser, useCheckout } from "../hooks"
 
 type PageProps = {}
 
@@ -18,10 +17,14 @@ type PageProps = {}
 const CartPage: NextPage<PageProps> = ({}) => {
   const user = useUser()
   const { push } = useRouter()
-  const [isCheckout, setIsCheckout] = useState(false)
   const { cart, isCartLoading, cartError } = useCartItems()
+  const { handleSubmitPayment, loading, error } = useCheckout()
 
-  const toggleProceedToCheckout = () => setIsCheckout((current) => !current)
+  const handleProceedToCheckout = () =>
+    cart &&
+    handleSubmitPayment({
+      cart,
+    })
 
   useEffect(() => {
     if (!user) {
@@ -48,14 +51,15 @@ const CartPage: NextPage<PageProps> = ({}) => {
               error={cartError}
             />
             {!!cart?.items.length && (
-              <Button className="my-4" onClick={toggleProceedToCheckout}>
-                {isCheckout ? "cancel checkout" : "proceed to checkout"}
+              <Button
+                className="my-4"
+                disabled={loading}
+                onClick={handleProceedToCheckout}
+              >
+                proceed to checkout
               </Button>
             )}
           </div>
-          {isCheckout && cart && user && (
-            <CheckoutForm cart={cart} className="lg:flex-1" />
-          )}
         </div>
       </PageContainer>
     </>

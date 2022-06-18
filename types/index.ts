@@ -1,3 +1,5 @@
+export * from "./stripe"
+
 export type Entity<D> = {
   id: number
   attributes: D
@@ -196,7 +198,4 @@ export type DeliveryAddressType = {
   email: string
 }
 
-export enum CheckoutResult {
-  success = "success",
-  cancel = "cancel",
-}
+export type CheckoutResult = "success" | "cancel"

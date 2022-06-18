@@ -1,0 +1,29 @@
+const { createServer } = require("https")
+const { parse } = require("url")
+const next = require("next")
+const fs = require("fs")
+// export {}
+
+const port = 3000
+const dev = process.env.NODE_ENV !== "production"
+const app = next({ dev })
+const handle = app.getRequestHandler()
+const httpsOptions = {
+  key: fs.readFileSync("./https_cert/localhost-key.pem"),
+  cert: fs.readFileSync("./https_cert/localhost.pem"),
+}
+
+app
+  .prepare()
+  .then(() => {
+    createServer(httpsOptions, (req, res) => {
+      const parsedUrl = parse(req.url, true)
+      handle(req, res, parsedUrl)
+    }).listen(port, () => {
+      console.log(`ready - started server on url: https://localhost:${port}`)
+    })
+  })
+  .catch((err) => {
+    console.log("Error: ", err.toString())
+    throw err
+  })

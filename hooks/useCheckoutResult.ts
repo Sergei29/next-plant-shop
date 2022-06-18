@@ -13,6 +13,7 @@ export const useCheckoutResult = () => {
   const {
     query: { status },
   } = useRouter()
+
   const { cart } = useCartItems()
   const {
     mutateAsync,
@@ -26,23 +27,24 @@ export const useCheckoutResult = () => {
     })
   )
 
-  const checkoutResult = status as CheckoutResult | undefined
+  // const checkoutResult = status as CheckoutResult | undefined
   const { items = [] } = cart || {}
 
   useEffect(() => {
-    if (checkoutResult !== CheckoutResult.success || items.length === 0) {
+    if (status !== "success" || items.length === 0) {
       return
     }
     const ids = items.map((item) => item.id)
-    mutateAsync(ids)
+    try {
+      mutateAsync(ids)
+    } catch (error) {
+      /**
+       * @description mutation.isError will be true
+       */
+    }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [checkoutResult, items])
+  }, [status, items])
 
-  return {
-    data,
-    loading,
-    error: getErrorMessage(error),
-    status: deleteCartStatus,
-  }
+  return status as CheckoutResult
 }

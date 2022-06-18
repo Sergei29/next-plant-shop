@@ -3,11 +3,10 @@ import { useMutation } from "react-query"
 import Stripe from "stripe"
 import { fetchData, getErrorMessage } from "../lib"
 import { getStripe } from "../lib/stripe"
-import { Cart, DeliveryAddressType } from "../types"
+import { Cart } from "../types"
 
 type CheckoutInput = {
   cart: Cart
-  address: DeliveryAddressType
 }
 
 export const useCheckout = () => {
@@ -22,15 +21,19 @@ export const useCheckout = () => {
     data,
     isError: isSessionError,
     error: sessionError,
-  } = useMutation(async (input: CheckoutInput) =>
-    fetchData<Stripe.Checkout.Session>("/api/checkout_sessions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: { ...input },
-    })
-  )
+  } = useMutation(async (input: CheckoutInput) => {
+    try {
+      return fetchData<Stripe.Checkout.Session>("/api/checkout_sessions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: { ...input },
+      })
+    } catch (error) {
+      // useMutation will handle the error
+    }
+  })
 
   const handleSubmitPayment = async (checkoutData: CheckoutInput) => {
     // Create a Checkout Session.
@@ -50,7 +53,7 @@ export const useCheckout = () => {
       // Make the id field from the Checkout Session creation API response
       // available to this file, so you can provide it as parameter here
       // instead of the {{CHECKOUT_SESSION_ID}} placeholder.
-      sessionId: session.id,
+      sessionId: session!.id,
     })
     // If `redirectToCheckout` fails due to a browser or network
     // error, display the localized error message to your customer
