@@ -1,5 +1,6 @@
 import { NextApiHandler } from "next"
 import Stripe from "stripe"
+import Cors from "micro-cors"
 import { buffer } from "micro"
 import {
   STRIPE_WEBHOOK_SECRET,
@@ -19,6 +20,10 @@ export const config = {
     bodyParser: false,
   },
 }
+const cors = Cors({
+  allowMethods: ["POST", "HEAD"],
+})
+
 /**
  * @description https://github.com/stripe/stripe-node#configuration
  */
@@ -96,4 +101,4 @@ const handleStripeWebhook: NextApiHandler<ReturnType> = async (req, res) => {
   res.status(200).end()
 }
 
-export default handleStripeWebhook
+export default cors(handleStripeWebhook as any)
