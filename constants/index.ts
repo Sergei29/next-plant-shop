@@ -1,9 +1,15 @@
+export * from "./stripe"
+
 export const REVALIDATE_PRODUCTS = process.env.REVALIDATE_SECONDS
   ? parseInt(process.env.REVALIDATE_SECONDS, 10)
   : 24 * 60 * 60
 export const CMS_API = process.env.CMS_API || ""
 export const NEXT_PUBLIC_CMS_API = process.env.NEXT_PUBLIC_CMS_API || ""
 export const NEXT_PUBLIC_CMS_API_DEV = process.env.NEXT_PUBLIC_CMS_API_DEV || ""
+export const NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY =
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || ""
+export const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY || ""
+
 export const QUERY_KEY = {
   USER: "user",
   CART_ITEMS: "cartItems",

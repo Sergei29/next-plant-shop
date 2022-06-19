@@ -1,3 +1,5 @@
+export * from "./stripe"
+
 export type Entity<D> = {
   id: number
   attributes: D
@@ -187,3 +189,13 @@ export type CartItemUpdatePayload = {
   quantity: number
   cartItemId: number
 }
+
+export type DeliveryAddressType = {
+  name: string
+  street: string
+  postcode: string
+  city: string
+  email: string
+}
+
+export type CheckoutResult = "success" | "cancel"

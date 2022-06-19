@@ -13,6 +13,19 @@ and change `The redirect URL to your front-end app` to production or development
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+### Stripe payments
+
+Checkout session created:
+
+- Next/client => Next/api => Stripe/api => Next/api => Next/client ( session created success )
+- Stripe/api/webhook => Next/api ( session competed / payment success) => Strapi/api ( create order ) | Customer email(successful purchase)
+
+##### In order to run Stripe checkout in Development, follow this:
+
+- start app in dev: `yarn dev`
+- login to stripe `yarn stripe:login`
+- redirect webhook events to locahost: `yarn stripe:webhooks-dev`
+
 ## Getting Started
 
 First, run the development server:

@@ -5,6 +5,7 @@ import { getProducts, ApiError } from "../lib"
 import { REVALIDATE_PRODUCTS } from "../constants"
 import ProductCard from "../components/ProductCard"
 import PageContainer from "../components/PageContainer"
+import { useCheckoutResult } from "../hooks"
 
 type Props = {
   products: ProductShort[] | null
@@ -39,6 +40,8 @@ export const getStaticProps: GetStaticProps<Props> = async (ctx) => {
  * @returns {JSX.Element} home page, products list
  */
 const Home: NextPage<PageProps> = ({ products }) => {
+  const status = useCheckoutResult()
+
   return (
     <>
       <Head>
@@ -49,6 +52,10 @@ const Home: NextPage<PageProps> = ({ products }) => {
 
       <PageContainer>
         <PageContainer.Title>Next Shop</PageContainer.Title>
+        {status === "success" && <h3> Payment succeeded </h3>}
+        {status === "cancel" && (
+          <h3> Payment canceled. You have not been charged. </h3>
+        )}
         <ul className="grid gap-4 grid-cols-1 lg:grid-cols-3 md:grid-cols-2">
           {products.map((product) => (
             <li key={product.id}>
