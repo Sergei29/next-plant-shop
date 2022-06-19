@@ -36,6 +36,7 @@ type ReturnType = {}
 const handleStripeWebhook: NextApiHandler<ReturnType> = async (req, res) => {
   console.log("req.method :>> ", req.method)
   if (req.method !== "POST") {
+    res.setHeader("Allow", "POST")
     res.status(405).end()
     return
   }
