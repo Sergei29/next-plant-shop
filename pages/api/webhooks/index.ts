@@ -59,10 +59,6 @@ const handleStripeWebhook: NextApiHandler<ReturnType> = async (req, res) => {
     return
   }
 
-  // TODO event received if event.type === 'payment_intent.succeeded'
-  // 1. create an order on STRAPI API
-  // 2. email the sustomer success email
-
   if (event.type === "checkout.session.completed") {
     const sessionFormatted = formatCheckoutSessionCompleted(
       event as StripeEvent<StripeCheckoutSession>
