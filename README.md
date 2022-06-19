@@ -5,9 +5,9 @@ Production CMS console: [https://next-shop-cms-strapi-v4.herokuapp.com/admin](ht
 
 when deploying and use Production version, go to CMS Admin console and update Google Provider settings
 
-![Strapi Admin Console](https://res.cloudinary.com/dlw2jic1w/image/upload/v1654265011/Screenshot_2022-06-03_at_17.01.38_glicar.png "Strapi Admin Console]")
+![Strapi Admin Console](https://res.cloudinary.com/dlw2jic1w/image/upload/v1655658338/Screenshot_2022-06-03_at_17.01.38_glicar.png "Strapi Admin Console]")
 
-![Strapi Admin Console Dev Settings](https://res.cloudinary.com/dlw2jic1w/image/upload/v1654265445/Screenshot_2022-06-03_at_17.09.53_dfuzko.png "Strapi Admin Console Dev Settings]")
+![Strapi Admin Console Dev Settings](https://res.cloudinary.com/dlw2jic1w/image/upload/v1655658232/Screenshot_2022-06-03_at_17.09.53_dfuzko.png "Strapi Admin Console Dev Settings]")
 
 and change `The redirect URL to your front-end app` to production or development url accordingly.
 
