@@ -75,7 +75,6 @@ const handleStripeWebhook: NextApiHandler<ReturnType> = async (req, res) => {
     } catch (error) {
       const message = (error as Error).message
       console.log(`Error creating new order: ${message}`)
-      res.status(200).end()
     }
 
     try {
@@ -90,11 +89,10 @@ const handleStripeWebhook: NextApiHandler<ReturnType> = async (req, res) => {
     } catch (error) {
       const message = (error as Error).message
       console.log(`Error creating new order: ${message}`)
-      res.status(200).end()
     }
   }
 
-  res.status(200).end()
+  res.status(200).send("ok")
 }
 
 export default cors(handleStripeWebhook as any)
