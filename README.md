@@ -20,7 +20,7 @@ Checkout session created:
 - Next/client => Next/api => Stripe/api => Next/api => Next/client ( session created success )
 - Stripe/api/webhook => Next/api ( session competed / payment success) => Strapi/api ( create order ) | Customer email(successful purchase)
 
-##### In order to run Stripe checkout in Development, follow this:
+#### In order to run Stripe checkout in Development, follow this:
 
 - start app in dev: `yarn dev`
 - login to stripe `yarn stripe:login`
